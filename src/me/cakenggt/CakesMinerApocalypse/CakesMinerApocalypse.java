@@ -1,0 +1,344 @@
+package me.cakenggt.CakesMinerApocalypse;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class CakesMinerApocalypse extends JavaPlugin {
+	private Listener playerListener;
+	private Listener moveListener;
+	private Listener blockListener;
+	private Listener chunkListener;
+	private int size = 10000;
+	private Map<World, Boolean> worldsTable = new HashMap<World, Boolean>();
+	private List<Location> craters;
+	private List<Location> GECKs;
+	private boolean apocalypseDamage = true;
+	private boolean randomSpawn = true;
+	private double shelterChance = 0.001;
+	private double craterChance = 0.001;
+	private int pipboyID = 345;
+	private final String configname = "config.yml";
+    
+    public void onDisable() {
+        // TODO: Place any custom disable code here.
+        System.out.println(this + " is now disabled!");
+    }
+    
+    public void onEnable() {
+    	playerListener = new CakesMinerApocalypsePlayerLogin(this);
+    	moveListener = new CakesMinerApocalypsePlayerMovement(this);
+    	blockListener = new CakesMinerApocalypseBlockListener(this);
+    	chunkListener = new CakesMinerApocalypseVaultCreator(this);
+    	if(!loadConfig()) {
+    		System.out.println(this + " has encountered an error while reading the configuration file," 
+    				+ " continuing with defaults");
+    	}
+    	try {
+			loadCraters();
+			loadGECKs();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	getServer().getPluginManager().registerEvents(playerListener, this);
+    	getServer().getPluginManager().registerEvents(moveListener, this);
+    	getServer().getPluginManager().registerEvents(blockListener, this);
+    	getServer().getPluginManager().registerEvents(chunkListener, this);
+    	try {
+			checkGECKs();
+		} catch (IOException e) {
+			//e.printStackTrace();
+		}
+    	final ShapedRecipe gRecipe = new ShapedRecipe(new ItemStack(Material.SPONGE, 1));
+        gRecipe.shape("CBC", "BAB", "CBC");
+        gRecipe.setIngredient('A', Material.DIAMOND_BLOCK);
+        gRecipe.setIngredient('B', Material.IRON_BLOCK);
+        gRecipe.setIngredient('C', Material.REDSTONE);
+        System.out.println(this + " is now enabled!");
+    }
+
+	private boolean loadConfig() {
+	    YamlConfiguration config = new YamlConfiguration();
+	    getDataFolder().mkdirs();
+	    File configfile = new File(getDataFolder(),configname);
+	    try {
+	      config.load(configfile);
+	    } catch (FileNotFoundException e) {
+	      config.set("size", size);
+	      for (World world : getServer().getWorlds()){
+	    	  config.set("worlds." + world.getName(), true);
+	      }
+	      config.set("randomSpawn", true);
+	      config.set("apocalypseDamage", apocalypseDamage);
+	      config.set("shelterChance", shelterChance);
+	      config.set("craterChance", craterChance);
+	      config.set("pipboyID", pipboyID);
+	      try {
+	        config.save(configfile);
+	      } catch (IOException e1) {
+	        System.out.println(this + " was unable to create the default config file!");
+	      }
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	      return false;
+	    } catch (InvalidConfigurationException e) {
+	      e.printStackTrace();
+	      return false;
+	    }
+	    this.setSize(config.getInt("size", this.getSize()));
+	    for (World world : getServer().getWorlds()){
+	    	this.setOn(world, config.getBoolean("worlds." + world.getName(), true));
+	    }
+	    this.setRandomSpawn(config.getBoolean("randomSpawn", this.getRandomSpawn()));
+	    this.setApocalypseDamage(config.getBoolean("apocalypseDamage", this.getApocalypseDamage()));
+	    this.setShelterChance(config.getDouble("shelterChance", this.getShelterChance()));
+	    this.setCraterChance(config.getDouble("craterChance", this.getCraterChance()));
+	    this.setPipboyID(config.getInt("pipboyID", this.getPipboyID()));
+	    return true;
+	  }
+
+	public void checkGECKs() throws IOException {
+		if (new File("plugins/CakesMinerApocalypse/").mkdirs())
+			System.out.println("GECK file created");
+		File myFile = new File("plugins/CakesMinerApocalypse/GECKs.txt");
+		if (!myFile.exists()){
+			PrintWriter outputFile = new PrintWriter("plugins/CakesMinerApocalypse/GECKs.txt");
+			System.out.println("GECK file created");
+			outputFile.close();
+		}
+		Scanner inputFile = new Scanner(myFile);
+		List<Location> GECKs = new ArrayList<Location>();
+		while (inputFile.hasNextLine()){
+			Location a = new Location(Bukkit.getServer().getWorld(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()));
+			GECKs.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		PrintWriter outputFile = new PrintWriter(myFile);
+		if (GECKs == null){
+			outputFile.close();
+			return;
+		}
+		for (Location GECK : GECKs){
+			Block block = GECK.getBlock();
+			if (block.getRelative(BlockFace.NORTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.SOUTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.EAST).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.WEST).getType() == Material.PISTON_BASE){
+				outputFile.println(block.getWorld().getName() + " " + block.getX() + " " + block.getY() + " " + block.getZ());
+			}
+		}
+		outputFile.close();
+	}
+	
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	public int getSize() {
+		return size;
+	}
+
+	public void setApocalypseDamage(boolean apocalypseDamage) {
+		this.apocalypseDamage = apocalypseDamage;
+	}
+	
+	public boolean getApocalypseDamage() {
+		return apocalypseDamage;
+	}
+
+	public void setOn(World world, boolean isOn){
+		this.worldsTable.put(world, isOn);
+	}
+
+	public Map<World, Boolean> getOn(){
+		return worldsTable;
+	}
+
+	public void setRandomSpawn(boolean randomSpawn){
+		this.randomSpawn = randomSpawn;
+	}
+	
+	public boolean getRandomSpawn() {
+		return randomSpawn;
+	}
+	
+	public void setShelterChance(double shelterChance) {
+		this.shelterChance = shelterChance;
+	}
+	
+	public double getShelterChance() {
+		return shelterChance;
+	}
+	
+	public void setCraterChance(double craterChance) {
+		this.craterChance = craterChance;
+	}
+	
+	public double getCraterChance() {
+		return craterChance;
+	}
+	
+	public void setPipboyID(int id) {
+		this.pipboyID = id;
+	}
+	
+	public int getPipboyID() {
+		return pipboyID;
+	}
+	
+	public void loadCraters() throws IOException {
+		File myFile = new File("plugins/CakesMinerApocalypse/craters.txt");
+		Scanner inputFile = new Scanner(myFile);
+		List<Location> craters = new ArrayList<Location>();
+		while (inputFile.hasNextLine()){
+			Location a = new Location(Bukkit.getServer().getWorld(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()));
+			craters.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		this.craters = craters;
+	}
+	public List<Location> getCraters() {
+		return craters;
+	}
+	public void loadGECKs() throws IOException{
+		File myFile = new File("plugins/CakesMinerApocalypse/GECKs.txt");
+		Scanner inputFile = new Scanner(myFile);
+		List<Location> GECKs = new ArrayList<Location>();
+		while (inputFile.hasNextLine()){
+			Location a = new Location(Bukkit.getServer().getWorld(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()));
+			GECKs.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		this.GECKs = GECKs;
+	}
+	public List<Location> getGECKs() {
+		return GECKs;
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+	   	if(cmd.getName().equalsIgnoreCase("radio")){ // If the player typed /radio then do the following...
+	   		Player player = null;
+    		if (sender instanceof Player) {
+    			player = (Player) sender;
+	    	}
+	   		if (player == null) {
+	   			sender.sendMessage("this command can only be run by a player");
+	   			return false;
+	   		}
+	   		if (player.getItemInHand().getTypeId() != getPipboyID()){
+	   			player.sendMessage("You must be holding a compass to work the radio");
+	   			return true;
+	   		}
+    		if (args.length != 1){
+	    		sender.sendMessage(cmd.getUsage());
+	   			return true;
+	   		}
+    		if (args[0].equalsIgnoreCase("scan")){
+    			try {
+					setFrequency(sender, args[0].toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
+	   		else{
+	   			String inputString = args[0].toString();
+	   			try {
+	   				setFrequency(sender, inputString);
+    			} catch (IOException e) {
+	    			e.printStackTrace();
+    			}
+    		return true;
+	   		}
+	    	}
+	   	if(cmd.getName().equalsIgnoreCase("support")){
+	   		String message = "";
+	   		for (String part : args){
+	   			message = message + " " + part;
+	   		}
+	   		Player[] recipientsArray = sender.getServer().getOnlinePlayers();
+			for (int i = 0; i < recipientsArray.length; i ++){
+				if (recipientsArray[i].isOp()){
+					recipientsArray[i].sendMessage(ChatColor.BLUE + "[Support Chat] " + sender.getName() + ":" + message);
+				}
+			}
+	   		return true;
+	   	}
+	    	return false;
+	}
+	    
+	   public void setFrequency (CommandSender sender, String inputString) throws IOException{
+		   if (new File("plugins/CakesMinerApocalypse/").mkdirs())
+				System.out.println("Frequencies file created");
+		   File myFile = new File("plugins/CakesMinerApocalypse/frequencies.txt");
+		   if (myFile.exists()){
+			   Scanner inputFileCheck = new Scanner(myFile);
+	           int j = 0;
+	           while (inputFileCheck.hasNext()) {
+            	inputFileCheck.nextLine();
+            	j++;
+	           }
+	           int size = (j + 1) / 2;
+	           String[] nameArray = new String[size];
+	           String[] circleArray = new String[size];
+	           inputFileCheck.close();
+	           Scanner inputFile = new Scanner(myFile);
+	           for (int i = 0; i < size; i++) {
+	               nameArray[i] = inputFile.nextLine();
+	               circleArray[i] = inputFile.nextLine();
+	           }
+	           boolean isInFile = false;
+	           for (int i = 0; i < size; i++) {
+	               if (nameArray[i].equalsIgnoreCase(sender.getName())){
+	               		circleArray[i] = inputString;
+	               		sender.sendMessage("frequency " + inputString + " set successfully!");
+	               		isInFile = true;
+	               }
+	           }
+	           inputFile.close();
+	           PrintWriter outputFile = new PrintWriter("plugins/CakesMinerApocalypse/frequencies.txt");
+	           for (int i = 0; i < size; i++) {
+	               outputFile.println(nameArray[i]);
+	               outputFile.println(circleArray[i]);
+	           }
+	           if (!isInFile){
+	        	   outputFile.println(sender.getName());
+	               outputFile.println(inputString);
+	           }
+	           outputFile.close();
+		}
+		else{
+			PrintWriter outputFile = new PrintWriter("plugins/CakesMinerApocalypse/frequencies.txt");
+	        outputFile.println(sender.getName());
+	        outputFile.println(inputString);
+	        sender.sendMessage("frequency " + inputString + " set successfully!");
+	        outputFile.close();
+		}
+    }
+}
