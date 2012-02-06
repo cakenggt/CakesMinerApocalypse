@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,9 +83,25 @@ public class CakesMinerApocalypse extends JavaPlugin {
         gRecipe.setIngredient('A', Material.DIAMOND_BLOCK);
         gRecipe.setIngredient('B', Material.IRON_BLOCK);
         gRecipe.setIngredient('C', Material.REDSTONE);
+        setupRefresh();
         System.out.println(this + " is now enabled!");
     }
 
+    private void setupRefresh() {
+    	Timer refreshTimer = new Timer();
+	     refreshTimer.scheduleAtFixedRate(new TimerTask() {
+	       public void run() {
+	    	   Player[] players = getServer().getOnlinePlayers();
+	       		for (Player p : players) {
+	       			p.setSneaking(false);
+	       			p.setSneaking(true);
+	       		}
+	       	
+	       }
+	     }
+	     , 500L, 5000L);
+	   }
+    
 	private boolean loadConfig() {
 	    YamlConfiguration config = new YamlConfiguration();
 	    getDataFolder().mkdirs();
