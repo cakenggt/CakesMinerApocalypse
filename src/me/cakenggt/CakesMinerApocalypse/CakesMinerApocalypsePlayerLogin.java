@@ -64,6 +64,7 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 			        thePlayer.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
 			        thePlayer.getInventory().addItem(new ItemStack(Material.BOAT, 1));
 			        thePlayer.getInventory().addItem(new ItemStack(Material.SEEDS, 20));
+			        thePlayer.getInventory().addItem(new ItemStack(Material.BREAD, 5));
 			        thePlayer.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
 			        thePlayer.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
 			        thePlayer.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS, 1));
@@ -105,6 +106,7 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 			        thePlayer.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
 			        thePlayer.getInventory().addItem(new ItemStack(Material.BOAT, 1));
 			        thePlayer.getInventory().addItem(new ItemStack(Material.SEEDS, 20));
+			        thePlayer.getInventory().addItem(new ItemStack(Material.BREAD, 5));
 			        thePlayer.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
 			        thePlayer.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
 			        thePlayer.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS, 1));
