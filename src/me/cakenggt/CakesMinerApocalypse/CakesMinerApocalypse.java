@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +38,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	private Listener moveListener;
 	private Listener blockListener;
 	private Listener chunkListener;
+	private Listener nukeListener;
 	private int size = 10000;
 	private Map<World, Boolean> worldsTable = new HashMap<World, Boolean>();
 	private List<Location> craters;
@@ -58,6 +60,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
     	moveListener = new CakesMinerApocalypsePlayerMovement(this);
     	blockListener = new CakesMinerApocalypseBlockListener(this);
     	chunkListener = new CakesMinerApocalypseVaultCreator(this);
+    	nukeListener = new CakesMinerApocalypseNuke(this);
     	if(!loadConfig()) {
     		System.out.println(this + " has encountered an error while reading the configuration file," 
     				+ " continuing with defaults");
@@ -73,6 +76,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
     	getServer().getPluginManager().registerEvents(moveListener, this);
     	getServer().getPluginManager().registerEvents(blockListener, this);
     	getServer().getPluginManager().registerEvents(chunkListener, this);
+    	getServer().getPluginManager().registerEvents(nukeListener, this);
     	try {
 			checkGECKs();
 		} catch (IOException e) {
@@ -83,6 +87,9 @@ public class CakesMinerApocalypse extends JavaPlugin {
         gRecipe.setIngredient('A', Material.DIAMOND_BLOCK);
         gRecipe.setIngredient('B', Material.IRON_BLOCK);
         gRecipe.setIngredient('C', Material.REDSTONE);
+        final FurnaceRecipe fRecipe = new FurnaceRecipe(new ItemStack(Material.GRAVEL, 1), Material.SNOW_BLOCK);
+        getServer().addRecipe(gRecipe);
+        getServer().addRecipe(fRecipe);
         setupRefresh();
         System.out.println(this + " is now enabled!");
     }

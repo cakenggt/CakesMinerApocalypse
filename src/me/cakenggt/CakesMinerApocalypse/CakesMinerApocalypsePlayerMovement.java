@@ -67,6 +67,7 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		if (!this.p.getApocalypseDamage())
 			return;
 		Player player = event.getPlayer();
+		ItemStack[] inventoryArray = player.getInventory().getContents();
 		Location loc = player.getLocation();
 		List<Location> craters = this.p.getCraters();
 		List<Location> GECKs = this.p.getGECKs();
@@ -79,10 +80,6 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		if (loc.getWorld().getHighestBlockYAt(loc) <= loc.getY() && (loc.getWorld().hasStorm() || loc.getWorld().isThundering())){
 			damageChance += .05;
 		}
-		if (!(loc.getWorld().getHighestBlockYAt(loc) <= loc.getY()) && (loc.getBlock().getType() != Material.WATER && loc.getBlock().getType() != Material.STATIONARY_WATER)){
-			//System.out.println("under a block and not in water");
-			return;
-		}
 		for (Location crater : craters){
 			if (crater.getWorld() == loc.getWorld())
 				damageChance += 1/(crater.distanceSquared(loc)/50);
@@ -93,6 +90,17 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 				if (block.isBlockIndirectlyPowered() && block.getRelative(BlockFace.NORTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.SOUTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.EAST).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.WEST).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.NORTH).isBlockIndirectlyPowered() && block.getRelative(BlockFace.SOUTH).isBlockIndirectlyPowered() && block.getRelative(BlockFace.EAST).isBlockIndirectlyPowered() && block.getRelative(BlockFace.WEST).isBlockIndirectlyPowered()){
 					if (GECK.getWorld() == loc.getWorld())
 						geck += 1/(GECK.distanceSquared(loc)/50);
+				}
+			}
+		}
+		if (!(loc.getWorld().getHighestBlockYAt(loc) <= loc.getY()) && (loc.getBlock().getType() != Material.WATER && loc.getBlock().getType() != Material.STATIONARY_WATER)){
+			//System.out.println("under a block and not in water");
+			damageChance = 0;
+		}
+		for (ItemStack a : inventoryArray){
+			if (a != null){
+				if (a.getType() == Material.SNOW){
+					damageChance += .05 * a.getAmount();
 				}
 			}
 		}
@@ -163,6 +171,7 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 			return;
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
+		ItemStack[] inventoryArray = player.getInventory().getContents();
 		List<Location> craters = this.p.getCraters();
 		List<Location> GECKs = this.p.getGECKs();
 		double damageChance = 0;
@@ -190,6 +199,13 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		if (!(loc.getWorld().getHighestBlockYAt(loc) <= loc.getY()) && (loc.getBlock().getType() != Material.WATER && loc.getBlock().getType() != Material.STATIONARY_WATER)){
 			//System.out.println("under a block and not in water");
 			damageChance = 0;
+		}
+		for (ItemStack a : inventoryArray){
+			if (a != null){
+				if (a.getType() == Material.SNOW){
+					damageChance += .05 * a.getAmount();
+				}
+			}
 		}
 		int rad = (int)((damageChance - geck)*1000);
 		if (rad < 0)
