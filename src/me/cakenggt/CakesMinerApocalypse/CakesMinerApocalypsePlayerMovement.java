@@ -1,5 +1,6 @@
 package me.cakenggt.CakesMinerApocalypse;
 
+import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Effect;
@@ -71,6 +72,7 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		Location loc = player.getLocation();
 		List<Location> craters = this.p.getCraters();
 		List<Location> GECKs = this.p.getGECKs();
+		List<Long> craterTimes = this.p.getCraterTimes();
 		double damageChance = 0;
 		double geck = 0;
 		if ((loc.getBlock().getType() == Material.WATER || loc.getBlock().getType() == Material.STATIONARY_WATER) && !player.isInsideVehicle()){
@@ -80,9 +82,21 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		if (loc.getWorld().getHighestBlockYAt(loc) <= loc.getY() && (loc.getWorld().hasStorm() || loc.getWorld().isThundering())){
 			damageChance += .05;
 		}
-		for (Location crater : craters){
-			if (crater.getWorld() == loc.getWorld())
-				damageChance += 1/(crater.distanceSquared(loc)/50);
+		java.util.Date now = new Date();
+		if (craters != null) {
+			for (Location crater : craters) {
+				if (crater.getWorld() == loc.getWorld()) {
+					//damageChance += 1/(crater.distanceSquared(loc)/50);
+					//double dam = 1/(crater.distanceSquared(loc)/50);
+					//System.out.println("distance " + crater.distance(loc));
+					//System.out.println("normal damage " + dam);
+					int index = craters.lastIndexOf(crater);
+					Long history = now.getTime()- craterTimes.get(index);
+					//System.out.println("age " + history.doubleValue()/(1000*60*60));
+					damageChance += (1000/ (crater.distanceSquared(loc) / 50))* (1/ (Math.pow(10, (Math.log10(history.doubleValue()/(1000*60*60)) / Math.log10(7)))));
+					//System.out.println("damageChance " + damageChance);
+				}
+			}
 		}
 		if (GECKs != null){
 			for (Location GECK : GECKs){
@@ -174,6 +188,7 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		ItemStack[] inventoryArray = player.getInventory().getContents();
 		List<Location> craters = this.p.getCraters();
 		List<Location> GECKs = this.p.getGECKs();
+		List<Long> craterTimes = this.p.getCraterTimes();
 		double damageChance = 0;
 		double geck = 0;
 		if ((loc.getBlock().getType() == Material.WATER || loc.getBlock().getType() == Material.STATIONARY_WATER) && !player.isInsideVehicle()){
@@ -183,10 +198,24 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		if (loc.getWorld().getHighestBlockYAt(loc) <= loc.getY() && (loc.getWorld().hasStorm() || loc.getWorld().isThundering())){
 			damageChance += .05;
 		}
-		for (Location crater : craters){
-			if (crater.getWorld() == loc.getWorld())
-				damageChance += 1/(crater.distanceSquared(loc)/50);
+		//System.out.println(damageChance);
+		java.util.Date now = new Date();
+		if (craters != null) {
+			for (Location crater : craters) {
+				if (crater.getWorld() == loc.getWorld()) {
+					//damageChance += 1/(crater.distanceSquared(loc)/50);
+					//double dam = 1/(crater.distanceSquared(loc)/50);
+					//System.out.println("distance " + crater.distance(loc));
+					//System.out.println("normal damage " + dam);
+					int index = craters.lastIndexOf(crater);
+					Long history = now.getTime()- craterTimes.get(index);
+					//System.out.println("age " + history.doubleValue()/(1000*60*60));
+					damageChance += (1000/ (crater.distanceSquared(loc) / 50))* (1/ (Math.pow(10, (Math.log10(history.doubleValue()/(1000*60*60)) / Math.log10(7)))));
+					//System.out.println("damageChance " + damageChance);
+				}
+			}
 		}
+		//System.out.println(damageChance);
 		if (GECKs != null){
 			for (Location GECK : GECKs){
 				Block block = GECK.getBlock();
@@ -196,10 +225,12 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 				}
 			}
 		}
+		//System.out.println(damageChance);
 		if (!(loc.getWorld().getHighestBlockYAt(loc) <= loc.getY()) && (loc.getBlock().getType() != Material.WATER && loc.getBlock().getType() != Material.STATIONARY_WATER)){
 			//System.out.println("under a block and not in water");
 			damageChance = 0;
 		}
+		//System.out.println(damageChance);
 		for (ItemStack a : inventoryArray){
 			if (a != null){
 				if (a.getType() == Material.SNOW){
@@ -207,6 +238,7 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 				}
 			}
 		}
+		//System.out.println(damageChance);
 		int rad = (int)((damageChance - geck)*1000);
 		if (rad < 0)
 			rad = 0;

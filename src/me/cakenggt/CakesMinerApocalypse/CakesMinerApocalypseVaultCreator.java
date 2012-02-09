@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,7 +48,9 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			System.out.println("Crater generated at " + start.getX() + " " + start.getZ());
 			start.getWorld().createExplosion(start, 32F, false);
 			craterWrite(start);
+			craterTimeWrite();
 			this.p.loadCraters();
+			this.p.loadCraterTimes();
 		}
 		
 		if (randomA <= 1) {
@@ -338,6 +342,21 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		FileWriter fWriter = new FileWriter("plugins/CakesMinerApocalypse/craters.txt", true);
 		PrintWriter outputFile = new PrintWriter(fWriter);
 		outputFile.println(location.getWorld().getName() + " " + location.getX() + " " + location.getY() + " " + location.getZ());
+		outputFile.close();
+	}
+	public static void craterTimeWrite () throws IOException{
+		if (new File("plugins/CakesMinerApocalypse/").mkdirs())
+			System.out.println("crater time file created");
+		File myFile = new File("plugins/CakesMinerApocalypse/craterTimes.txt");
+		if (!myFile.exists()){
+			PrintWriter outputFile = new PrintWriter("plugins/CakesMinerApocalypse/craterTimes.txt");
+			System.out.println("crater time file created");
+			outputFile.close();
+		}
+		FileWriter fWriter = new FileWriter("plugins/CakesMinerApocalypse/craterTimes.txt", true);
+		PrintWriter outputFile = new PrintWriter(fWriter);
+		java.util.Date now = new Date();
+		outputFile.println(now.getTime() - 1234800000);
 		outputFile.close();
 	}
 }

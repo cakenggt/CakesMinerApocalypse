@@ -43,6 +43,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	private Map<World, Boolean> worldsTable = new HashMap<World, Boolean>();
 	private List<Location> craters;
 	private List<Location> GECKs;
+	private List<Long> craterTimes;
 	private boolean apocalypseDamage = true;
 	private boolean randomSpawn = true;
 	private double shelterChance = 0.001;
@@ -68,6 +69,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
     	try {
 			loadCraters();
 			loadGECKs();
+			loadCraterTimes();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -265,6 +267,21 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	}
 	public List<Location> getGECKs() {
 		return GECKs;
+	}
+	public void loadCraterTimes() throws IOException {
+		File myFile = new File("plugins/CakesMinerApocalypse/craterTimes.txt");
+		Scanner inputFile = new Scanner(myFile);
+		List<Long> craterTimes = new ArrayList<Long>();
+		while (inputFile.hasNextLine()){
+			Long a = Long.valueOf(inputFile.next());
+			craterTimes.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		this.craterTimes = craterTimes;
+	}
+	public List<Long> getCraterTimes() {
+		return craterTimes;
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
