@@ -308,6 +308,12 @@ public class CakesMinerApocalypse extends JavaPlugin {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				return true;
+    		}
+    		else if (args[0].equalsIgnoreCase("version")){
+    			String name = this.toString();
+    			player.sendMessage(name);
+    			return true;
     		}
 	   		else{
 	   			String inputString = args[0].toString();
@@ -316,9 +322,9 @@ public class CakesMinerApocalypse extends JavaPlugin {
     			} catch (IOException e) {
 	    			e.printStackTrace();
     			}
-    		return true;
+    			return true;
 	   		}
-	    	}
+	    }
 	   	if(cmd.getName().equalsIgnoreCase("support")){
 	   		String message = "";
 	   		for (String part : args){
@@ -359,7 +365,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	           for (int i = 0; i < size; i++) {
 	               if (nameArray[i].equalsIgnoreCase(sender.getName())){
 	               		circleArray[i] = inputString;
-	               		sender.sendMessage("frequency " + inputString + " set successfully!");
+	               		sender.sendMessage("Frequency " + inputString + " set successfully!");
 	               		isInFile = true;
 	               }
 	           }
