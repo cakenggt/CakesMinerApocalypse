@@ -24,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 
@@ -231,6 +232,7 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 		outputFile.println(location.getWorld().getName() + " " + location.getX() + " " + location.getY() + " " + location.getZ());
 		outputFile.close();
 	}
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void chunkUnload(ChunkUnloadEvent event){
 		Chunk chunk = event.getChunk();
 		BlockState[] array = chunk.getTileEntities();
@@ -239,8 +241,19 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 				Block radio = entity.getBlock();
 				if (radio.getRelative(BlockFace.NORTH).getType() == Material.JUKEBOX || radio.getRelative(BlockFace.EAST).getType() == Material.JUKEBOX || radio.getRelative(BlockFace.SOUTH).getType() == Material.JUKEBOX || radio.getRelative(BlockFace.WEST).getType() == Material.JUKEBOX){
 					event.setCancelled(true);
+					return;
 				}
 			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void chunkLoad(ChunkLoadEvent event){
+		Chunk chunk = event.getChunk();
+		int x = Math.abs(chunk.getX() * 16);
+		int z = Math.abs(chunk.getZ() * 16);
+		if (x > this.p.getSize()/2 + 16 || z > this.p.getSize()/2 + 16){
+			chunk.unload();
+			return;
 		}
 	}
 }
