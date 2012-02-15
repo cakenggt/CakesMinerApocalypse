@@ -1,0 +1,20 @@
+name: CakesMinerApocalypse
+main: me.cakenggt.CakesMinerApocalypse.CakesMinerApocalypse
+version: 2.25
+author: cakenggt
+permissions:
+  cakesminerapocalypse.radio:
+      description: gives access to radio
+      default: true
+  cakesminerapocalypse.support:
+      description: gives access to support
+      default: true
+commands:
+  radio:
+    description: This command sets your radio frequency.
+    permission: cakesminerapocalypse.radio
+    usage: Example usage /radio 1335
+  support:
+    description: This command lets you talk to ops.
+    permission: cakesminerapocalypse.support
+    usage: Example usage /support please help me
