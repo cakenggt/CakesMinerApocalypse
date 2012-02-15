@@ -125,46 +125,50 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 		List<Player> recipients = radio.getWorld().getPlayers();
 		Player[] recipientsArray = recipients.toArray(new Player[recipients.size()]);
 		for (int i = 0; i < recipientsArray.length; i ++){
-			if (recipientsArray[i].getLocation().getWorld() != radio.getLocation().getWorld())
-				return;
-			double distance = recipientsArray[i].getLocation().distance(radio.getLocation());
-			if (recipientsArray[i].getWorld().hasStorm())
-				distance = 2 * distance;
-			if (recipientsArray[i].getWorld().isThundering())
-				distance = 0;
-			if (distance <= broadcastGarble * broadcastDistance){
-				boolean frequencyMatch = false;
-				try {
-					frequencyMatch = checkFrequency(recipientsArray[i], frequency);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				if (frequencyMatch){
-					recipientsArray[i].sendMessage(ChatColor.RED + "[Radio " + frequency + "] " + message);
-				}
-			}
-			else if (distance > broadcastGarble * broadcastDistance && distance <= broadcastDistance){
-				boolean frequencyMatch = false;
-				try {
-					frequencyMatch = checkFrequency(recipientsArray[i], frequency);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				if (frequencyMatch){
-					int messageLength = message.length();
-					double percent = (distance - (broadcastGarble * broadcastDistance)) / ((1-broadcastGarble) * broadcastDistance);
-					int amountRemoved = (int) (percent * ((double) messageLength));
-					char [] charString = message.toCharArray();
-					for (int k = 0; k < amountRemoved ; k++){
-						int removalPoint = (int) (Math.random() * (charString.length - 1));
-						charString[removalPoint] = ' ';
+			if (recipientsArray[i].getLocation().getWorld() == radio.getLocation().getWorld()) {
+				double distance = recipientsArray[i].getLocation().distance(
+						radio.getLocation());
+				if (recipientsArray[i].getWorld().hasStorm())
+					distance = 2 * distance;
+				if (recipientsArray[i].getWorld().isThundering())
+					distance = 0;
+				if (distance <= broadcastGarble * broadcastDistance) {
+					boolean frequencyMatch = false;
+					try {
+						frequencyMatch = checkFrequency(recipientsArray[i],
+								frequency);
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					String charMessage = new String(charString);
-					recipientsArray[i].sendMessage(ChatColor.RED + "[Radio " + frequency + "] " + charMessage);
+					if (frequencyMatch) {
+						recipientsArray[i].sendMessage(ChatColor.RED
+								+ "[Radio " + frequency + "] " + message);
+					}
+				} else if (distance > broadcastGarble * broadcastDistance
+						&& distance <= broadcastDistance) {
+					boolean frequencyMatch = false;
+					try {
+						frequencyMatch = checkFrequency(recipientsArray[i],
+								frequency);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					if (frequencyMatch) {
+						int messageLength = message.length();
+						double percent = (distance - (broadcastGarble * broadcastDistance))
+								/ ((1 - broadcastGarble) * broadcastDistance);
+						int amountRemoved = (int) (percent * ((double) messageLength));
+						char[] charString = message.toCharArray();
+						for (int k = 0; k < amountRemoved; k++) {
+							int removalPoint = (int) (Math.random() * (charString.length - 1));
+							charString[removalPoint] = ' ';
+						}
+						String charMessage = new String(charString);
+						recipientsArray[i].sendMessage(ChatColor.RED
+								+ "[Radio " + frequency + "] " + charMessage);
+					}
 				}
 			}
-			else
-				return;
 		}
 	}
 	

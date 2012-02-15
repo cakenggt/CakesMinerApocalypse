@@ -128,28 +128,33 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		Set<Player> recipients = event.getRecipients();
 		String message = event.getMessage();
 		System.out.println("<" + sender.getPlayerListName() + "> " + message);
+		int rec = 0;
 		for (Player recipient : recipients){
-			if (recipient.getLocation().getWorld() != sender.getLocation().getWorld())
-				return;
-			double distance = recipient.getLocation().distance(sender.getLocation());
-			if (distance <= 25){
-				recipient.sendMessage(ChatColor.GREEN + sender.getPlayerListName() + ": " + message);
-			}
-			else if (distance > 25 && distance <= 50){
-				int messageLength = message.length();
-				double percent = (distance - 25) / 25;
-				int amountRemoved = (int) (percent * ((double) messageLength));
-				char [] charString = message.toCharArray();
-				for (int k = 0; k < amountRemoved ; k++){
-					int removalPoint = (int) (Math.random() * (charString.length - 1));
-					charString[removalPoint] = ' ';
+			if (recipient.getLocation().getWorld() == sender.getLocation().getWorld()) {
+				double distance = recipient.getLocation().distance(
+						sender.getLocation());
+				if (distance <= 25) {
+					recipient.sendMessage(ChatColor.GREEN
+							+ sender.getPlayerListName() + ": " + message);
+					rec ++;
 				}
-				String charMessage = new String(charString);
-				recipient.sendMessage(ChatColor.GREEN + sender.getPlayerListName() + ": " + charMessage);
+				else if (distance > 25 && distance <= 50) {
+					int messageLength = message.length();
+					double percent = (distance - 25) / 25;
+					int amountRemoved = (int) (percent * ((double) messageLength));
+					char[] charString = message.toCharArray();
+					for (int k = 0; k < amountRemoved; k++) {
+						int removalPoint = (int) (Math.random() * (charString.length - 1));
+						charString[removalPoint] = ' ';
+					}
+					String charMessage = new String(charString);
+					recipient.sendMessage(ChatColor.GREEN
+							+ sender.getPlayerListName() + ": " + charMessage);
+					rec ++;
+				}
 			}
-			else
-				return;
 		}
+		System.out.println("Message received by " + rec + " players.");
 		event.setCancelled(true);
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
