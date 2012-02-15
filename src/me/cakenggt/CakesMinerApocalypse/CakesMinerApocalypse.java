@@ -49,6 +49,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	private double shelterChance = 0.001;
 	private double craterChance = 0.001;
 	private int pipboyID = 345;
+	private int chatDistance = 50;
 	private final String configname = "config.yml";
     
     public void onDisable() {
@@ -127,6 +128,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.set("shelterChance", shelterChance);
 	      config.set("craterChance", craterChance);
 	      config.set("pipboyID", pipboyID);
+	      config.set("chatDistance", chatDistance);
 	      try {
 	        config.save(configfile);
 	      } catch (IOException e1) {
@@ -148,6 +150,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	    this.setShelterChance(config.getDouble("shelterChance", this.getShelterChance()));
 	    this.setCraterChance(config.getDouble("craterChance", this.getCraterChance()));
 	    this.setPipboyID(config.getInt("pipboyID", this.getPipboyID()));
+	    this.setChatDistance(config.getInt("chatDistance", this.getChatDistance()));
 	    return true;
 	  }
 
@@ -236,6 +239,14 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	
 	public int getPipboyID() {
 		return pipboyID;
+	}
+	
+	public void setChatDistance(int distance) {
+		this.chatDistance = distance;
+	}
+	
+	public int getChatDistance() {
+		return chatDistance;
 	}
 	
 	public void loadCraters() throws IOException {

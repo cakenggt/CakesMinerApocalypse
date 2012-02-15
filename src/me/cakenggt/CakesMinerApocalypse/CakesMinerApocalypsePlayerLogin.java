@@ -129,16 +129,17 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		String message = event.getMessage();
 		System.out.println("<" + sender.getPlayerListName() + "> " + message);
 		int rec = 0;
+		double chatDistance = (double)this.p.getChatDistance();
 		for (Player recipient : recipients){
 			if (recipient.getLocation().getWorld() == sender.getLocation().getWorld()) {
 				double distance = recipient.getLocation().distance(
 						sender.getLocation());
-				if (distance <= 25) {
+				if (distance <= chatDistance/2) {
 					recipient.sendMessage(ChatColor.GREEN
 							+ sender.getPlayerListName() + ": " + message);
 					rec ++;
 				}
-				else if (distance > 25 && distance <= 50) {
+				else if (distance > chatDistance/2 && distance <= chatDistance) {
 					int messageLength = message.length();
 					double percent = (distance - 25) / 25;
 					int amountRemoved = (int) (percent * ((double) messageLength));
