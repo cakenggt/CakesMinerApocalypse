@@ -39,11 +39,13 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	private Listener blockListener;
 	private Listener chunkListener;
 	private Listener nukeListener;
+	private CakesMinerApocalypseBroadcast broadcast;
 	private int size = 10000;
 	private Map<World, Boolean> worldsTable = new HashMap<World, Boolean>();
 	private List<Location> craters;
 	private List<Location> GECKs;
 	private List<Long> craterTimes;
+	private List<Location> radios;
 	private boolean apocalypseDamage = true;
 	private boolean randomSpawn = true;
 	private double shelterChance = 0.001;
@@ -71,6 +73,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 			loadCraters();
 			loadGECKs();
 			loadCraterTimes();
+			loadRadios();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,8 +83,10 @@ public class CakesMinerApocalypse extends JavaPlugin {
     	getServer().getPluginManager().registerEvents(blockListener, this);
     	getServer().getPluginManager().registerEvents(chunkListener, this);
     	getServer().getPluginManager().registerEvents(nukeListener, this);
+    	this.broadcast = new CakesMinerApocalypseBroadcast(this);
     	try {
 			checkGECKs();
+			checkRadios();
 		} catch (IOException e) {
 			//e.printStackTrace();
 		}
@@ -94,6 +99,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
         getServer().addRecipe(gRecipe);
         getServer().addRecipe(fRecipe);
         setupRefresh();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.broadcast, 20L, 100L);
         System.out.println(this + " is now enabled!");
     }
 
@@ -179,6 +185,37 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		for (Location GECK : GECKs){
 			Block block = GECK.getBlock();
 			if (block.getRelative(BlockFace.NORTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.SOUTH).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.EAST).getType() == Material.PISTON_BASE && block.getRelative(BlockFace.WEST).getType() == Material.PISTON_BASE){
+				outputFile.println(block.getWorld().getName() + " " + block.getX() + " " + block.getY() + " " + block.getZ());
+			}
+		}
+		outputFile.close();
+	}
+	
+	public void checkRadios() throws IOException {
+		if (new File("plugins/CakesMinerApocalypse/").mkdirs())
+			System.out.println("radio file created");
+		File myFile = new File("plugins/CakesMinerApocalypse/radios.txt");
+		if (!myFile.exists()){
+			PrintWriter outputFile = new PrintWriter("plugins/CakesMinerApocalypse/radios.txt");
+			System.out.println("radio file created");
+			outputFile.close();
+		}
+		Scanner inputFile = new Scanner(myFile);
+		List<Location> radios = new ArrayList<Location>();
+		while (inputFile.hasNextLine()){
+			Location a = new Location(Bukkit.getServer().getWorld(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()));
+			radios.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		PrintWriter outputFile = new PrintWriter(myFile);
+		if (radios == null){
+			outputFile.close();
+			return;
+		}
+		for (Location radio : radios){
+			Block block = radio.getBlock();
+			if (block.isBlockIndirectlyPowered()){
 				outputFile.println(block.getWorld().getName() + " " + block.getX() + " " + block.getY() + " " + block.getZ());
 			}
 		}
@@ -294,6 +331,21 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	public List<Long> getCraterTimes() {
 		return craterTimes;
 	}
+	public void loadRadios() throws IOException {
+		File myFile = new File("plugins/CakesMinerApocalypse/radios.txt");
+		Scanner inputFile = new Scanner(myFile);
+		List<Location> radios = new ArrayList<Location>();
+		while (inputFile.hasNextLine()){
+			Location a = new Location(Bukkit.getServer().getWorld(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()), Double.valueOf(inputFile.next()));
+			radios.add(a);
+			inputFile.nextLine();
+		}
+		inputFile.close();
+		this.radios = radios;
+	}
+	public List<Location> getRadios() {
+		return radios;
+	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 	   	if(cmd.getName().equalsIgnoreCase("radio")){ // If the player typed /radio then do the following...
@@ -321,20 +373,25 @@ public class CakesMinerApocalypse extends JavaPlugin {
 				}
 				return true;
     		}
-    		else if (args[0].equalsIgnoreCase("version")){
+    		if (args[0].equalsIgnoreCase("version")){
     			String name = this.toString();
     			player.sendMessage(name);
     			return true;
     		}
-	   		else{
-	   			String inputString = args[0].toString();
-	   			try {
-	   				setFrequency(sender, inputString);
-    			} catch (IOException e) {
-	    			e.printStackTrace();
-    			}
-    			return true;
-	   		}
+    		try {
+				Double.parseDouble(args[0].toString());
+		    }
+			catch (NumberFormatException e) {
+				sender.sendMessage(cmd.getUsage());
+				return true;
+		    }
+	   		String inputString = args[0].toString();
+	   		try {
+	   			setFrequency(sender, inputString);
+    		} catch (IOException e) {
+	    		e.printStackTrace();
+    		}
+    		return true;
 	    }
 	   	if(cmd.getName().equalsIgnoreCase("support")){
 	   		String message = "";

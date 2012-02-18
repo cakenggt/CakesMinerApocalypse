@@ -130,6 +130,8 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		System.out.println("<" + sender.getPlayerListName() + "> " + message);
 		int rec = 0;
 		double chatDistance = (double)this.p.getChatDistance();
+		if (chatDistance == -5)
+			return;
 		for (Player recipient : recipients){
 			if (recipient.getLocation().getWorld() == sender.getLocation().getWorld()) {
 				double distance = recipient.getLocation().distance(
