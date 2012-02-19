@@ -17,7 +17,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -204,5 +206,13 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 	public void sneakToggle (PlayerToggleSneakEvent event){
 		event.getPlayer().setSneaking(true);
 		event.setCancelled(true);
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void noJoinMessage(PlayerJoinEvent event) {
+		event.setJoinMessage(null);
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void noQuitMessage(PlayerQuitEvent event) {
+		event.setQuitMessage(null);
 	}
 }
