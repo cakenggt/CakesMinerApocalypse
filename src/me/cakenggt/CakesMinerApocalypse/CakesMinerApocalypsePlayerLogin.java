@@ -55,7 +55,7 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 			teleLoc.getWorld().loadChunk((int)randX, (int)randZ, true);
 			teleLoc.setY(teleLoc.getWorld().getHighestBlockAt(teleLoc).getY());
 			//System.out.println(randX + " " + randZ);
-			event.getPlayer().getWorld().setSpawnLocation((int)teleLoc.getX(), (int)teleLoc.getY(), (int)teleLoc.getZ());
+			//event.getPlayer().getWorld().setSpawnLocation((int)teleLoc.getX(), (int)teleLoc.getY(), (int)teleLoc.getZ());
 			//System.out.println(teleLoc.getX() + " " + teleLoc.getZ());
 			final Location teleportLoc = teleLoc;
 			@SuppressWarnings("unused")
@@ -98,7 +98,7 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 			teleLoc.setZ(randZ);
 			teleLoc.getWorld().loadChunk((int)randX, (int)randZ, true);
 			teleLoc.setY(teleLoc.getWorld().getHighestBlockAt(teleLoc).getY());
-			event.setRespawnLocation(teleLoc);
+			//event.setRespawnLocation(teleLoc);
 			final Location teleportLoc = teleLoc;
 			@SuppressWarnings("unused")
 			int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
@@ -123,12 +123,18 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event){
-		if (!this.p.getOn().get(event.getPlayer().getWorld())){
-			return;
-		}
 		Player sender = event.getPlayer();
 		Set<Player> recipients = event.getRecipients();
 		String message = event.getMessage();
+		if (!this.p.getOn().get(event.getPlayer().getWorld())){
+			for (Player re : recipients){
+				if (!this.p.getOn().get(re.getWorld())){
+					re.sendMessage(sender.getPlayerListName() + ": " + message);
+				}
+			}
+			event.setCancelled(true);
+			return;
+		}
 		System.out.println("<" + sender.getPlayerListName() + "> " + message);
 		int rec = 0;
 		double chatDistance = (double)this.p.getChatDistance();

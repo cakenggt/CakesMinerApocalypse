@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -37,29 +38,58 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		//}
 		int size = this.p.getSize();
 		double halfSize = size /2;
-		if (to.getX() < -1 * halfSize){
-			to = to.add(size, 0, 0);
-			to.getWorld().loadChunk((int)to.getX(), (int)to.getZ(), true);
-			to.setY(to.getWorld().getHighestBlockAt(to).getY());
-			event.getPlayer().teleport(to);
+		double eigthSize = halfSize/8;
+		if (to.getWorld().getEnvironment() == Environment.NETHER){
+			if (to.getX() < -1 * eigthSize) {
+				to = to.add(size, 0, 0);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getX() > eigthSize) {
+				to = to.add(-1 * size, 0, 0);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getZ() < -1 * eigthSize) {
+				to = to.add(0, 0, size);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getZ() > eigthSize) {
+				to = to.add(0, 0, -1 * size);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
 		}
-		if (to.getX() > halfSize){
-			to = to.add(-1 * size, 0, 0);
-			to.getWorld().loadChunk((int)to.getX(), (int)to.getZ(), true);
-			to.setY(to.getWorld().getHighestBlockAt(to).getY());
-			event.getPlayer().teleport(to);
-		}
-		if (to.getZ() < -1 * halfSize){
-			to = to.add(0, 0, size);
-			to.getWorld().loadChunk((int)to.getX(), (int)to.getZ(), true);
-			to.setY(to.getWorld().getHighestBlockAt(to).getY());
-			event.getPlayer().teleport(to);
-		}
-		if (to.getZ() > halfSize){
-			to = to.add(0, 0, -1 * size);
-			to.getWorld().loadChunk((int)to.getX(), (int)to.getZ(), true);
-			to.setY(to.getWorld().getHighestBlockAt(to).getY());
-			event.getPlayer().teleport(to);
+		else {
+			if (to.getX() < -1 * halfSize) {
+				to = to.add(size, 0, 0);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getX() > halfSize) {
+				to = to.add(-1 * size, 0, 0);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getZ() < -1 * halfSize) {
+				to = to.add(0, 0, size);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
+			if (to.getZ() > halfSize) {
+				to = to.add(0, 0, -1 * size);
+				to.getWorld().loadChunk((int) to.getX(), (int) to.getZ(), true);
+				to.setY(to.getWorld().getHighestBlockAt(to).getY());
+				event.getPlayer().teleport(to);
+			}
 		}
 	}
 	
