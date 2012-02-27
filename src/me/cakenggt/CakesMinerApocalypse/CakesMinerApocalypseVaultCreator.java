@@ -284,14 +284,21 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 				start.getBlock().getRelative(5, 0, 6),
 				start.getBlock().getRelative(5, 2, 5),
 				start.getBlock().getRelative(5, 2, 6) };
+		int i = 0;
+		int g = random.nextInt(lootGroups.size());
 		for (Block block : chestArray) {
+			// Each double chest gets a random group of loot
+			if ((i & 1) == 0) {
+				g = random.nextInt(lootGroups.size());
+			}
+			List<ItemStack> loot = lootGroups.get(g);
+
+			i += 1;
+
 			Chest chest = (Chest) block.getState();
 			Inventory chestInventory = chest.getInventory();
 			//ItemStack[] chestStack = new ItemStack[27];
 
-			// TODO: per large-chest instead of per chest
-			int g = random.nextInt(lootGroups.size());
-			List<ItemStack> loot = lootGroups.get(g);
 
 			for (int t = 0; t < 27; t++) {
 				int a = (int) (Math.random() * 64);
