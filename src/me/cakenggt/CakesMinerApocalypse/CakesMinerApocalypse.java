@@ -130,21 +130,107 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      for (World world : getServer().getWorlds()){
 	    	  config.set("worlds." + world.getName(), true);
 	      }
-	      config.set("randomSpawn", true);
-	      config.set("apocalypseDamage", apocalypseDamage);
-	      config.set("shelterChance", shelterChance);
-	      config.set("craterChance", craterChance);
-	      config.set("pipboyID", pipboyID);
-	      config.set("chatDistance", chatDistance);
-	      config.set("shelter.lightBlock", "glowstone");
-	      //config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
-          config.set("shelter.enabledLootGroups", new String[] { "food" });
-          config.set("shelter.loot.food", new String[] { "pumpkin_seeds", 
+		config.set("randomSpawn", true);
+		config.set("apocalypseDamage", apocalypseDamage);
+		config.set("shelterChance", shelterChance);
+		config.set("craterChance", craterChance);
+		config.set("pipboyID", pipboyID);
+		config.set("chatDistance", chatDistance);
+		config.set("shelter.lightBlock", "glowstone");
+		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
+		config.set("shelter.enabledLootGroups", new String[] { "regular" });
+
+		// Default loot
+		config.set("shelter.loot.regular", new String[] { "pumpkin_seeds", 
 			"bread", "cake", "melon", "mushroom_soup", "cooked_chicken", 
             "cooked_beef", "grilled_pork", "cooked_fish", 
 			"redstone", "356" /* diode item, not block */, "redstone_torch_on", 
             "torch", "iron_fence", "compass", "iron_boots", "iron_chestplate", 
 			"iron_leggings", "melon_seeds", "seeds" });
+
+		// Some examples for reference / inspiration / ease of enabling if mods/plugins installed
+		// These aren't enabled by default (not in enabledLootGroups)
+
+    	// http://dev.bukkit.org/server-mods/enchantmore/
+		config.set("shelter.loot.enchantmore", new String[] {
+		   "3xfishing_rod+21@2",              // Fishing Rod + Looting
+		   "4xflint_and_steel;25+5@1",        // Flint & Steel + Respiration
+		   "10xflint_and_steel;60+3@1",       // Flint & Steel + Blast Protection
+		   "1xflint_and_steel;15+17@1",       // Flint & Steel + Smite
+		   "20xiron_helmet+20@1",             // Helmet + Fire Aspect
+		   "1xdiamond_hoe+6@1",               // Hoe + Aqua Affinity
+		   "1xgold_hoe;30+48@1",              // Hoe + Power
+		   "1xiron_hoe+33@1",                 // Hoe + Silk Touch
+		   "1xdiamond_pickaxe+50@1",          // Pickaxe + Flame
+		   "1xiron_pickaxe+16@1",             // Pickaxe + Power
+		   "1xdiamond_pickaxe;1000+33@2",     // Pickaxe + Silk Touch II
+		   "1xdiamond_leggings+2@1",          // Leggings + Feather Falling
+		   "1xshears+18@1",                   // Shears + Bane of Arthropods
+		   "5xshears+21@1+17@1",              // Shears + Looting + Smite
+		   "2xdiamond_spade;1500+48@1",       // Shovel + Power
+		   "1xgold_sword;10+48@1",            // Sword + Power
+		   "1xwood_sword+33@1",               // Sword + Silk Touch
+		   "1xiron_axe+48@1",                 // Axe + Power
+		   "1xleather_boots;10+48@1+49@1",    // Boots + Power + Punch
+		   "10xbow+2@2",                      // Bow + Feather Falling II
+		   "5xleather_chestplate+33@1",       // Chestplate + Silk Touch
+		   "64xarrow" });
+
+    	// http://www.minecraftforum.net/topic/182918-11smp-flans-mods-planes-ww2-guns-vehicles-playerapi-moods-mputils-teams/
+		config.set("shelter.loot.plane", new String[] {
+		   "2x23289",  //  metal wing
+		   "2x23267",  //  machine gun
+		   "2x23262",  //  bomb bay
+		   "1x23261",  //  metal tail
+		   "1x23281",  //  metal propeller
+		   "1x23265",  //  metal cockpit
+		   "1x23274",  //  V4 engine
+		   "1x23275",  //  V6 engine
+		   "1x23277",  //  V8 engine
+		   "16x23270", //  bullet
+		   "16x23270", //  bullet
+		   "2x23271",  //  small bomb
+		   "64xcoal",
+		   "2x255" }); //  plane crafting table
+
+		//  http://www.minecraftforum.net/topic/211517-11-balkons-weaponmod-v84-multiplayer/
+    	config.set("shelter.loot.balkan", new String[] {
+		   "1x5000",   //  wooden spear
+		   "1x5006",   //  stone halberd
+		   "1x5011",   //  stone battleaxe
+		   "1x5019",   //  gold warhammer
+		   "1x5023",   //  diamond knive
+		   "1x5025",   //  wooden flail
+		   "1x5030",   //  javalin
+		   "1x5033",   //  musket barrel
+		   "5x5037",   //  poisonous dart
+		   "32x5039",  //  fire rod
+		   "1x5040",   //  cannon
+		   "32x5041",  //  cannonball
+		   "32x5043",  //  blunderbuss shot
+		   "1x5046",   //  stock
+		   "1x5045" });//  training dummy
+
+		//  http://www.minecraftforum.net/topic/119361-110-tehkrushs-mods-all-mods-updated-and-plasticcraft-smp/
+    	config.set("shelter.loot.plastic", new String[] {
+		   "1x1027",   //  health needle
+		   "1x1027",   //  health needle
+		   "1x1027",   //  health needle
+		   "1x1009",   //  bowl of gelatin
+		   "1x1024",   //  water bottle
+		   "1x1024",   //  water bottle
+		   "1x1025",   //  milk bottle
+		   "1x1028",   //  jello
+		   "16x1013",  //  duct tape
+		   "16x1015",  //  battery
+		   "8x1041",   //  kevlar vest
+		   "8x1042",   //  kevlar pants
+		   "1x1050",   //  plastic shovel
+		   "32x127",   //  C4 plastic explosive
+		   "64x128",   //  plexiglass
+		   "1x1014",   //  plexiglass door
+		   "1x130",    //  microwave oven
+		   "1x1040" });//  night-vision goggles
 
           config.set("shelter.potionLoot", new String[] { "glass_bottle", 
 			"nether_stalk", "glowstone_dust", "redstone", "fermented_spider_eye", "magma_cream",
