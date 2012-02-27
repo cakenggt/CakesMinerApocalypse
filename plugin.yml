@@ -9,6 +9,9 @@ permissions:
   cakesminerapocalypse.support:
       description: gives access to support
       default: true
+  cakesminerapocalypse.generatevault:
+      description: gives access to generatevault
+      default: op
 commands:
   radio:
     description: This command sets your radio frequency.
@@ -18,3 +21,8 @@ commands:
     description: This command lets you talk to ops.
     permission: cakesminerapocalypse.support
     usage: Example usage /support please help me
+  generatevault:
+    description: This command lets you generate vaults (fallout shelters).
+    permission: cakesminerapocalypse.generatevault
+    usage: Example usage /generatevault 1 2 3
+    aliases: genvault

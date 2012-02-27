@@ -37,7 +37,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	private Listener playerListener;
 	private Listener moveListener;
 	private Listener blockListener;
-	private Listener chunkListener;
+	private CakesMinerApocalypseVaultCreator chunkListener;
 	private Listener nukeListener;
 	private CakesMinerApocalypseBroadcast broadcast;
 	private int size = 10000;
@@ -406,6 +406,48 @@ public class CakesMinerApocalypse extends JavaPlugin {
 			}
 	   		return true;
 	   	}
+
+		if (cmd.getName().equalsIgnoreCase("generatevault")) {
+			World world = null;
+			if (sender instanceof Player) {
+				if (!((Player)sender).hasPermission("cakesminerapocalypse.generatevault")) {
+					sender.sendMessage("You do not have permission to generate vaults");
+					return true;
+				}
+				world = ((Player)sender).getWorld();
+			}
+
+			// Get location to generate vault
+			int x = 0, y = 0, z = 0;
+			if (args.length < 3) {
+				if (args.length == 1 && args[0].equalsIgnoreCase("here") && sender instanceof Player) {
+					x = ((Player)sender).getLocation().getBlockX();
+					y = ((Player)sender).getLocation().getBlockY();
+					z = ((Player)sender).getLocation().getBlockZ();
+				} else {
+					sender.sendMessage("Missing required arguments");
+					return false;
+				}
+			} else {
+				try {
+					x = Integer.parseInt(args[0]);
+					y = Integer.parseInt(args[1]);
+					z = Integer.parseInt(args[2]);
+				} catch (NumberFormatException e) {
+					sender.sendMessage("Invalid coordinates");
+					return false;
+				}
+			}
+
+			if (args.length >= 4) {
+				world = Bukkit.getWorld(args[3]);
+			} else if (world == null) {
+				world = Bukkit.getWorlds().get(0);
+			}
+
+			chunkListener.generateVault(new Location(world, x, y, z));
+			return true;
+		}
 	    	return false;
 	}
 	    

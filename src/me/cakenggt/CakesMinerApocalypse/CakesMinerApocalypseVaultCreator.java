@@ -55,16 +55,17 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		
 		if (randomA <= 1) {
 			Location start = new Location(event.getWorld(), x + 8, y, z + 2);
-			generateFalloutShelter(start);
+			generateVault(start);
 		}
 	}
 
-	public void generateFalloutShelter(Location start) {
+	public void generateVault(Location start) {
 		System.out.println("Fallout shelter generated at " + start.getX() + " " + start.getZ());
 		//start.getBlock().setType(Material.GLOWSTONE);
 		start = start.subtract(0, 1, 0);
 		start.getBlock().setType(Material.TRAP_DOOR);
-		while (start.getBlock().getY() > (start.getY() - 2) / 2) {
+		double y = start.getY() - 2;
+		while (start.getBlock().getY() > y / 2) {
 			start.subtract(0, 1, 0);
 			//start = start.subtract(0, 1, 0);
 			start.getBlock().setType(Material.LADDER);
