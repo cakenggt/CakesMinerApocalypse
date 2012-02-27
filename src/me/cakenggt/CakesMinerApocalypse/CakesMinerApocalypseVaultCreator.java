@@ -31,6 +31,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
 	final ItemStack lightBlock;
 	List<ItemStack> loot;
+	List<ItemStack> enchantingLoot;
 
 	public CakesMinerApocalypseVaultCreator(CakesMinerApocalypse plugin) {
 		p = plugin;
@@ -41,6 +42,12 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		for (String itemString: plugin.getConfig().getStringList("shelter.loot")) {
 			loot.add(codeName2ItemStack(itemString));
 		}
+
+		enchantingLoot = new ArrayList<ItemStack>();
+		for (String itemString: plugin.getConfig().getStringList("shelter.enchantingLoot")) {
+			enchantingLoot.add(codeName2ItemStack(itemString));
+		}
+
 	}
 
     // Parse a material code string with optional damage value (ex: 35;11)
@@ -301,40 +308,12 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		for (int t = 1; t < 27; t++) {
 			int a = (int) (Math.random() * 48);
 			int b = (int) (Math.random() * 64);
-			if (a == 0) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.GLASS_BOTTLE, b));
-			} else if (a == 1) {
-				chestInventory.setItem(t, new ItemStack(
-						372, b)); //Nether wart
-			} else if (a == 2) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.GLOWSTONE_DUST, b));
-			} else if (a == 3) {
-				chestInventory.setItem(t, new ItemStack(Material.REDSTONE,
-						b));
-			} else if (a == 4) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.FERMENTED_SPIDER_EYE, b));
-			} else if (a == 5) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.MAGMA_CREAM, b));
-			} else if (a == 6) {
-				chestInventory.setItem(t, new ItemStack(Material.SUGAR, b));
-			} else if (a == 7) {
-				chestInventory.setItem(t, new ItemStack(382, b));
-			} else if (a == 8) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.SPIDER_EYE, b));
-			} else if (a == 9) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.GHAST_TEAR, b));
-			} else if (a == 10) {
-				chestInventory.setItem(t, new ItemStack(
-						Material.BLAZE_POWDER, b));
-			} else if (a == 11) {
-				chestInventory.setItem(t,
-						new ItemStack(Material.SULPHUR, b));
+
+			if (a < enchantingLoot.size()) {
+				ItemStack item = enchantingLoot.get(a).clone();
+				item.setAmount(b % item.getAmount());
+
+				chestInventory.setItem(t, item);
 			}
 		}
 		chest.update(true);
