@@ -45,8 +45,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
     // Parse a material code string with optional damage value (ex: 35;11)
     public static ItemStack codeName2ItemStack(String codeName) {
-        Pattern p = Pattern.compile("^([0-9a-z_]+)[;:/]?([\\d-]*)([+]?.*)$");
-		System.out.println("item "+codeName);
+        Pattern p = Pattern.compile("^(\\d+x)?([0-9a-z_]+)[;:/]?([\\d-]*)([+]?.*)$");
         Matcher m = p.matcher(codeName);
         int typeCode;
         short dmgCode;
@@ -55,30 +54,38 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
             throw new IllegalArgumentException("Invalid item code format: " + codeName);
         }
 
+		int count = 64;
+		if (m.group(1) != null) {
+			try {
+				count = Integer.parseInt(m.group(1).replace("x", ""));
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Invalid item count: " + m.group(1) + " in " + codeName);
+			}
+		}
+
         // typeid
 		try {
-			typeCode = Integer.parseInt(m.group(1));
+			typeCode = Integer.parseInt(m.group(2));
 		} catch (NumberFormatException e) {
-			Material material = Material.matchMaterial(m.group(1));
+			Material material = Material.matchMaterial(m.group(2));
 			if (material == null) {
-				throw new IllegalArgumentException("Invalid item type: " + m.group(1) + " in " + codeName);
+				throw new IllegalArgumentException("Invalid item type: " + m.group(2) + " in " + codeName);
 			}
 			typeCode = material.getId();
 		}
-		System.out.println(typeCode + " = "+codeName);
 
         // ;damagevalue 
-        if (m.group(2) != null && !m.group(2).equals("")) {
-            dmgCode = Short.parseShort(m.group(2));
+        if (m.group(3) != null && !m.group(3).equals("")) {
+            dmgCode = Short.parseShort(m.group(3));
         } else {
             dmgCode = 0;
         }
 
-        ItemStack item = new ItemStack(typeCode, 1, dmgCode);
+        ItemStack item = new ItemStack(typeCode, count, dmgCode);
 
         // +enchantcode@enchantlevel...
-        if (m.group(3) != null && !m.group(3).equals("")) {
-            String[] parts = m.group(3).split("[+]");
+        if (m.group(4) != null && !m.group(4).equals("")) {
+            String[] parts = m.group(4).split("[+]");
 
             for (String part: parts) {
                 if (part.length() == 0) {
@@ -271,7 +278,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
 				if (a < loot.size()) {
 					ItemStack item = loot.get(a).clone();
-					item.setAmount(b);
+					item.setAmount(b % item.getAmount());  // configured amount is maximum to allow
 
 					chestInventory.setItem(t, item);
 				}
