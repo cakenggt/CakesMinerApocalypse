@@ -21,8 +21,8 @@ commands:
     description: This command lets you talk to ops.
     permission: cakesminerapocalypse.support
     usage: Example usage /support please help me
-  generatevault:
-    description: This command lets you generate vaults (fallout shelters).
-    permission: cakesminerapocalypse.generatevault
-    usage: Example usage /generatevault 1 2 3
+  placeshelter:
+    description: This command lets you place fallout shelters.
+    permission: cakesminerapocalypse.placeshelter
+    usage: Example usage /placeshelter 1 2 3 or /placeshelter here
     aliases: genvault

@@ -135,7 +135,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.set("craterChance", craterChance);
 	      config.set("pipboyID", pipboyID);
 	      config.set("chatDistance", chatDistance);
-	      config.set("shelter.lightBlock", "89");	// glowstone
+	      config.set("shelter.lightBlock", "glowstone");
 	      //config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
 	      try {
 	        config.save(configfile);
@@ -409,17 +409,17 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	   		return true;
 	   	}
 
-		if (cmd.getName().equalsIgnoreCase("generatevault")) {
+		if (cmd.getName().equalsIgnoreCase("placeshelter")) {
 			World world = null;
 			if (sender instanceof Player) {
-				if (!((Player)sender).hasPermission("cakesminerapocalypse.generatevault")) {
-					sender.sendMessage("You do not have permission to generate vaults");
+				if (!((Player)sender).hasPermission("cakesminerapocalypse.placeshelter")) {
+					sender.sendMessage("You do not have permission to place fallout shelters");
 					return true;
 				}
 				world = ((Player)sender).getWorld();
 			}
 
-			// Get location to generate vault
+			// Get location to generate shelter
 			int x = 0, y = 0, z = 0;
 			if (args.length < 3) {
 				if (args.length == 1 && args[0].equalsIgnoreCase("here") && sender instanceof Player) {
@@ -447,7 +447,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 				world = Bukkit.getWorlds().get(0);
 			}
 
-			chunkListener.generateVault(new Location(world, x, y, z));
+			chunkListener.placeShelter(new Location(world, x, y, z));
 			return true;
 		}
 	    	return false;

@@ -37,7 +37,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
     // Parse a material code string with optional damage value (ex: 35;11)
     public static ItemStack codeName2ItemStack(String codeName) {
-        Pattern p = Pattern.compile("^(\\d+)[;:/]?([\\d-]*)([+]?.*)$");
+        Pattern p = Pattern.compile("^([0-9a-z]+)[;:/]?([\\d-]*)([+]?.*)$");
         Matcher m = p.matcher(codeName);
         int typeCode;
         short dmgCode;
@@ -47,7 +47,16 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
         }
 
         // typeid
-        typeCode = Integer.parseInt(m.group(1));
+		try {
+			typeCode = Integer.parseInt(m.group(1));
+		} catch (NumberFormatException e) {
+			Material material = Material.matchMaterial(m.group(1));
+			if (material == null) {
+				throw new IllegalArgumentException("Invalid item type: " + m.group(1) + " in " + codeName);
+			}
+			typeCode = material.getId();
+		}
+
         // ;damagevalue 
         if (m.group(2) != null && !m.group(2).equals("")) {
             dmgCode = Short.parseShort(m.group(2));
@@ -121,11 +130,11 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		
 		if (randomA <= 1) {
 			Location start = new Location(event.getWorld(), x + 8, y, z + 2);
-			generateVault(start);
+			placeShelter(start);
 		}
 	}
 
-	public void generateVault(Location start) {
+	public void placeShelter(Location start) {
 		System.out.println("Fallout shelter generated at " + start.getX() + " " + start.getZ());
 		//start.getBlock().setType(Material.GLOWSTONE);
 		start = start.subtract(0, 1, 0);
