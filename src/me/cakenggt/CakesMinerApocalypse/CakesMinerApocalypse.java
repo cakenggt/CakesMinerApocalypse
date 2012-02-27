@@ -138,14 +138,15 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.set("chatDistance", chatDistance);
 	      config.set("shelter.lightBlock", "glowstone");
 	      //config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
-          config.set("shelter.loot", new String[] { "pumpkin_seeds", 
+          config.set("shelter.enabledLootGroups", new String[] { "food" });
+          config.set("shelter.loot.food", new String[] { "pumpkin_seeds", 
 			"bread", "cake", "melon", "mushroom_soup", "cooked_chicken", 
             "cooked_beef", "grilled_pork", "cooked_fish", 
 			"redstone", "356" /* diode item, not block */, "redstone_torch_on", 
             "torch", "iron_fence", "compass", "iron_boots", "iron_chestplate", 
 			"iron_leggings", "melon_seeds", "seeds" });
 
-          config.set("shelter.enchantingLoot", new String[] { "glass_bottle", 
+          config.set("shelter.potionLoot", new String[] { "glass_bottle", 
 			"nether_stalk", "glowstone_dust", "redstone", "fermented_spider_eye", "magma_cream",
 			"sugar", "speckled_melon", "spider_eye", "ghast_tear", "blaze_powder", "sulphur" });
 

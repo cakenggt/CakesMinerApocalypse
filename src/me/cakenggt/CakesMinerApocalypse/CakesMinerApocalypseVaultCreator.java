@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.regex.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -30,22 +31,32 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 	CakesMinerApocalypse p;
 
 	final ItemStack lightBlock;
-	List<ItemStack> loot;
-	List<ItemStack> enchantingLoot;
+	final List<ArrayList<ItemStack>> lootGroups;
+	final List<ItemStack> potionLoot;
 
+	final Random random;
+
+	@SuppressWarnings("unchecked")
 	public CakesMinerApocalypseVaultCreator(CakesMinerApocalypse plugin) {
 		p = plugin;
 
+		random = new Random();
+
 		lightBlock = codeName2ItemStack(plugin.getConfig().getString("shelter.lightBlock"));
 
-		loot = new ArrayList<ItemStack>();
-		for (String itemString: plugin.getConfig().getStringList("shelter.loot")) {
-			loot.add(codeName2ItemStack(itemString));
+		List<String> enabledLootGroups = plugin.getConfig().getStringList("shelter.enabledLootGroups");
+		lootGroups = new ArrayList<ArrayList<ItemStack>>();
+		for (String groupName: enabledLootGroups) {
+			ArrayList<ItemStack> group = new ArrayList<ItemStack>();
+			for (String itemString: plugin.getConfig().getStringList("shelter.loot." + groupName)) {
+				group.add(codeName2ItemStack(itemString));
+			}
+			lootGroups.add(group);
 		}
 
-		enchantingLoot = new ArrayList<ItemStack>();
-		for (String itemString: plugin.getConfig().getStringList("shelter.enchantingLoot")) {
-			enchantingLoot.add(codeName2ItemStack(itemString));
+		potionLoot = new ArrayList<ItemStack>();
+		for (String itemString: plugin.getConfig().getStringList("shelter.potionLoot")) {
+			potionLoot.add(codeName2ItemStack(itemString));
 		}
 
 	}
@@ -277,6 +288,11 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			Chest chest = (Chest) block.getState();
 			Inventory chestInventory = chest.getInventory();
 			//ItemStack[] chestStack = new ItemStack[27];
+
+			// TODO: per large-chest instead of per chest
+			int g = random.nextInt(lootGroups.size());
+			List<ItemStack> loot = lootGroups.get(g);
+
 			for (int t = 0; t < 27; t++) {
 				int a = (int) (Math.random() * 64);
 				int b = (int) (Math.random() * 64);
@@ -284,7 +300,8 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 					a = a - 19;
 
 				if (a < loot.size()) {
-					ItemStack item = loot.get(a).clone();
+					ItemStack item = loot.get(a);
+					item = item.clone();
 					item.setAmount(b % item.getAmount());  // configured amount is maximum to allow
 
 					chestInventory.setItem(t, item);
@@ -309,8 +326,8 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			int a = (int) (Math.random() * 48);
 			int b = (int) (Math.random() * 64);
 
-			if (a < enchantingLoot.size()) {
-				ItemStack item = enchantingLoot.get(a).clone();
+			if (a < potionLoot.size()) {
+				ItemStack item = potionLoot.get(a).clone();
 				item.setAmount(b % item.getAmount());
 
 				chestInventory.setItem(t, item);
