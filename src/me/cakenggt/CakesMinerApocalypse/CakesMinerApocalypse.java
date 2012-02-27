@@ -60,15 +60,16 @@ public class CakesMinerApocalypse extends JavaPlugin {
     }
     
     public void onEnable() {
+    	if(!loadConfig()) {
+    		System.out.println(this + " has encountered an error while reading the configuration file," 
+    				+ " continuing with defaults");
+    	}
+
     	playerListener = new CakesMinerApocalypsePlayerLogin(this);
     	moveListener = new CakesMinerApocalypsePlayerMovement(this);
     	blockListener = new CakesMinerApocalypseBlockListener(this);
     	chunkListener = new CakesMinerApocalypseVaultCreator(this);
     	nukeListener = new CakesMinerApocalypseNuke(this);
-    	if(!loadConfig()) {
-    		System.out.println(this + " has encountered an error while reading the configuration file," 
-    				+ " continuing with defaults");
-    	}
     	try {
 			loadCraters();
 			loadGECKs();
@@ -137,6 +138,11 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.set("chatDistance", chatDistance);
 	      config.set("shelter.lightBlock", "glowstone");
 	      //config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
+          config.set("shelter.loot", new String[] { "pumpkin_seeds", 
+"bread", "cake", "melon", "mushroom_soup", "cooked_chicken", "cooked_beef", "grilled_pork", "cooked_fish", 
+"redstone", "356" /* diode item, not block */, "redstone_torch_on", "torch", "iron_fence", "compass", "iron_boots", "iron_chestplate", 
+"iron_leggings", "melon_seeds", "seeds" });
+
 	      try {
 	        config.save(configfile);
 	      } catch (IOException e1) {

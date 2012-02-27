@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -28,16 +30,23 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 	CakesMinerApocalypse p;
 
 	final ItemStack lightBlock;
+	List<ItemStack> loot;
 
 	public CakesMinerApocalypseVaultCreator(CakesMinerApocalypse plugin) {
 		p = plugin;
 
 		lightBlock = codeName2ItemStack(plugin.getConfig().getString("shelter.lightBlock"));
+
+		loot = new ArrayList<ItemStack>();
+		for (String itemString: plugin.getConfig().getStringList("shelter.loot")) {
+			loot.add(codeName2ItemStack(itemString));
+		}
 	}
 
     // Parse a material code string with optional damage value (ex: 35;11)
     public static ItemStack codeName2ItemStack(String codeName) {
-        Pattern p = Pattern.compile("^([0-9a-z]+)[;:/]?([\\d-]*)([+]?.*)$");
+        Pattern p = Pattern.compile("^([0-9a-z_]+)[;:/]?([\\d-]*)([+]?.*)$");
+		System.out.println("item "+codeName);
         Matcher m = p.matcher(codeName);
         int typeCode;
         short dmgCode;
@@ -56,6 +65,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			}
 			typeCode = material.getId();
 		}
+		System.out.println(typeCode + " = "+codeName);
 
         // ;damagevalue 
         if (m.group(2) != null && !m.group(2).equals("")) {
@@ -258,72 +268,12 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 				int b = (int) (Math.random() * 64);
 				if (a >= 54 && a <= 63)
 					a = a - 19;
-				if (a == 0) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.PUMPKIN_SEEDS, b));
-				} else if (a == 1) {
-					chestInventory.setItem(t, new ItemStack(Material.BREAD,
-							b));
-				} else if (a == 2) {
-					chestInventory.setItem(t, new ItemStack(Material.CAKE,
-							b));
-				} else if (a == 3) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.COOKIE, b));
-				} else if (a == 4) {
-					chestInventory.setItem(t, new ItemStack(Material.MELON,
-							b));
-				} else if (a == 5) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.MUSHROOM_SOUP, b));
-				} else if (a == 6) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.COOKED_CHICKEN, b));
-				} else if (a == 7) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.COOKED_BEEF, b));
-				} else if (a == 8) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.GRILLED_PORK, b));
-				} else if (a == 9) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.COOKED_FISH, b));
-				} else if (a == 10) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.REDSTONE, b));
-				} else if (a == 11) {
-					chestInventory.setItem(t, new ItemStack(Material.DIODE,
-							b));
-				} else if (a == 12) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.REDSTONE_TORCH_ON, b));
-				} else if (a == 13) {
-					chestInventory.setItem(t, new ItemStack(Material.TORCH,
-							b));
-				} else if (a == 14) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.IRON_FENCE, b));
-				} else if (a == 15) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.COMPASS, b));
-				} else if (a == 16) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.IRON_BOOTS, b));
-				} else if (a == 17) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.IRON_CHESTPLATE, b));
-				} else if (a == 18) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.IRON_HELMET, b));
-				} else if (a == 19) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.IRON_LEGGINGS, b));
-				} else if (a == 20) {
-					chestInventory.setItem(t, new ItemStack(
-							Material.MELON_SEEDS, b));
-				} else if (a == 21) {
-					chestInventory.setItem(t, new ItemStack(Material.SEEDS,
-							b));
+
+				if (a < loot.size()) {
+					ItemStack item = loot.get(a).clone();
+					item.setAmount(b);
+
+					chestInventory.setItem(t, item);
 				}
 			}
 			chest.update(true);
