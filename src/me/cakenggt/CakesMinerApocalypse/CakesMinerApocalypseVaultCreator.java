@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.regex.*;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,9 +26,73 @@ import org.bukkit.inventory.ItemStack;
 
 public class CakesMinerApocalypseVaultCreator implements Listener {
 	CakesMinerApocalypse p;
+
+	final ItemStack lightBlock;
+
 	public CakesMinerApocalypseVaultCreator(CakesMinerApocalypse plugin) {
 		p = plugin;
+
+		lightBlock = codeName2ItemStack(plugin.getConfig().getString("shelter.lightBlock"));
 	}
+
+    // Parse a material code string with optional damage value (ex: 35;11)
+    public static ItemStack codeName2ItemStack(String codeName) {
+        Pattern p = Pattern.compile("^(\\d+)[;:/]?([\\d-]*)([+]?.*)$");
+        Matcher m = p.matcher(codeName);
+        int typeCode;
+        short dmgCode;
+
+        if (!m.find()) {
+            throw new IllegalArgumentException("Invalid item code format: " + codeName);
+        }
+
+        // typeid
+        typeCode = Integer.parseInt(m.group(1));
+        // ;damagevalue 
+        if (m.group(2) != null && !m.group(2).equals("")) {
+            dmgCode = Short.parseShort(m.group(2));
+        } else {
+            dmgCode = 0;
+        }
+
+        ItemStack item = new ItemStack(typeCode, 1, dmgCode);
+
+        // +enchantcode@enchantlevel...
+        if (m.group(3) != null && !m.group(3).equals("")) {
+            String[] parts = m.group(3).split("[+]");
+
+            for (String part: parts) {
+                if (part.length() == 0) {
+                    continue;
+                }
+
+                String[] idAndLevel = part.split("@");
+                if (idAndLevel.length != 2) {
+                    throw new IllegalArgumentException("Invalid item code: " + codeName + ", enchantment spec: " + part);
+                }
+                int id, level;
+                try {
+                    id = Integer.parseInt(idAndLevel[0]);
+                    level = Integer.parseInt(idAndLevel[1]);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Invalid item code: " + codeName + ", enchantment id/level: " + part);
+                }
+
+                Enchantment ench = Enchantment.getById(id);
+
+                // Add unsafe, since plugins might want to (ab)use enchantments (compatibility with EnchantMore)
+                item.addUnsafeEnchantment(ench, level);
+            }
+        }
+
+        return item;
+    }
+
+	public static void setBlock(Block block, ItemStack itemStack) {
+		block.setTypeIdAndData(itemStack.getTypeId(), (byte)itemStack.getDurability(), false); 
+	}
+
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void vaultCreator(ChunkLoadEvent event) throws IOException {
 		//System.out.println("chunk load event");
@@ -123,24 +189,25 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			xIteration = 0;
 			startBlock = start.getBlock().getRelative(0, yIteration, 0);
 		}
-		start.getBlock().getRelative(2, 4, 2).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(2, 4, 5).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 1, 1).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 1, 2).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 3, 1).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 3, 2).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 1, 5).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 1, 6).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 3, 5).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(-1, 3, 6).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 1, 1).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 1, 2).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 3, 1).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 3, 2).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 1, 5).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 1, 6).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 3, 5).setType(Material.GLOWSTONE);
-		start.getBlock().getRelative(5, 3, 6).setType(Material.GLOWSTONE);
+		setBlock(start.getBlock().getRelative(2, 4, 2), lightBlock);
+		setBlock(start.getBlock().getRelative(2, 4, 5), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 1, 1), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 1, 2), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 3, 1), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 3, 2), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 1, 5), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 1, 6), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 3, 5), lightBlock);
+		setBlock(start.getBlock().getRelative(-1, 3, 6), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 1, 1), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 1, 2), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 3, 1), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 3, 2), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 1, 5), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 1, 6), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 3, 5), lightBlock);
+		setBlock(start.getBlock().getRelative(5, 3, 6), lightBlock);
+
 		start.getBlock().getRelative(-1, 0, 1).setType(Material.CHEST);
 		start.getBlock().getRelative(-1, 0, 2).setType(Material.CHEST);
 		start.getBlock().getRelative(-1, 2, 1).setType(Material.CHEST);

@@ -135,6 +135,8 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.set("craterChance", craterChance);
 	      config.set("pipboyID", pipboyID);
 	      config.set("chatDistance", chatDistance);
+	      config.set("shelter.lightBlock", "89");	// glowstone
+	      //config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
 	      try {
 	        config.save(configfile);
 	      } catch (IOException e1) {
