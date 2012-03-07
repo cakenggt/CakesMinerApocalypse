@@ -35,7 +35,9 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		if (!this.p.getOn().get(event.getPlayer().getWorld())){
 			return;
 		}
-		event.getPlayer().setSneaking(true);
+		if (p.getConfig().getBoolean("alwaysSneak", true)) {
+			event.getPlayer().setSneaking(true);
+		}
 		if (!this.p.getRandomSpawn())
 			return;
 		final Player thePlayer = event.getPlayer();
@@ -82,7 +84,9 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		if (!this.p.getOn().get(event.getPlayer().getWorld())){
 			return;
 		}
-		event.getPlayer().setSneaking(true);
+		if (p.getConfig().getBoolean("alwaysSneak", true)) {
+			event.getPlayer().setSneaking(true);
+		}
 		if (!this.p.getRandomSpawn())
 			return;
 		if (event.getPlayer().getBedSpawnLocation() == null || event.getPlayer().getKiller() != null || event.getPlayer().getFoodLevel() < 10){
@@ -210,8 +214,10 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void sneakToggle (PlayerToggleSneakEvent event){
-		event.getPlayer().setSneaking(true);
-		event.setCancelled(true);
+		if (p.getConfig().getBoolean("alwaysSneak", true)) {
+			event.getPlayer().setSneaking(true);
+			event.setCancelled(true);
+		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void noJoinMessage(PlayerJoinEvent event) {
@@ -222,3 +228,4 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		event.setQuitMessage(null);
 	}
 }
+     

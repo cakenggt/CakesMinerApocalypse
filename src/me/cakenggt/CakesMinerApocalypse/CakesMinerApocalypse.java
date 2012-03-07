@@ -99,7 +99,9 @@ public class CakesMinerApocalypse extends JavaPlugin {
         final FurnaceRecipe fRecipe = new FurnaceRecipe(new ItemStack(Material.GRAVEL, 1), Material.SNOW_BLOCK);
         getServer().addRecipe(gRecipe);
         getServer().addRecipe(fRecipe);
-        setupRefresh();
+		if (getConfig().getBoolean("alwaysSneak", true)) {
+			setupRefresh();
+		}
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.broadcast, 20L, 100L);
         System.out.println(this + " is now enabled!");
     }
@@ -136,6 +138,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		config.set("craterChance", craterChance);
 		config.set("pipboyID", pipboyID);
 		config.set("chatDistance", chatDistance);
+		config.set("alwaysSneak", true);    
 		config.set("shelter.lightBlock", "glowstone");
 		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
 		config.set("shelter.enabledLootGroups", new String[] { "regular" });
