@@ -309,7 +309,13 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 				if (a < loot.size()) {
 					ItemStack item = loot.get(a);
 					item = item.clone();
-					item.setAmount(b % item.getAmount());  // configured amount is maximum to allow
+                    int count = b % item.getAmount();
+					// if 0, will be infinite, so force to 1 - see https://github.com/mushroomhostage/exphc/issues/12
+					if (count < 1) {
+						count = 1;
+					}
+
+					item.setAmount(count);  // configured amount is maximum to allow
 
 					chestInventory.setItem(t, item);
 				}
@@ -335,7 +341,12 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
 			if (a < potionLoot.size()) {
 				ItemStack item = potionLoot.get(a).clone();
-				item.setAmount(b % item.getAmount());
+                int count = b % item.getAmount();
+				if (count < 1) {
+					count = 1;
+				}
+
+				item.setAmount(count);
 
 				chestInventory.setItem(t, item);
 			}
