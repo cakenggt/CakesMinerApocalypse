@@ -89,7 +89,14 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		}
 		if (!this.p.getRandomSpawn())
 			return;
-		if (event.getPlayer().getBedSpawnLocation() == null || event.getPlayer().getKiller() != null || event.getPlayer().getFoodLevel() < 10){
+
+		boolean shouldRandomSpawn = event.getPlayer().getBedSpawnLocation() == null || event.getPlayer().getKiller() != null || event.getPlayer().getFoodLevel() < 10;
+
+		if (p.getConfig().getBoolean("randomRespawnAlways", false)) {
+			shouldRandomSpawn = true;
+		}
+
+        if (shouldRandomSpawn) {
 			int size = this.p.getSize();
 			final Player thePlayer = event.getPlayer();
 			Location playerLoc = event.getPlayer().getWorld().getSpawnLocation();
