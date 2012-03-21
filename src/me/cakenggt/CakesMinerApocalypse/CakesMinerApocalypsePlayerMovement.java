@@ -227,10 +227,14 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		double geck = 0;
 		if ((loc.getBlock().getType() == Material.WATER || loc.getBlock().getType() == Material.STATIONARY_WATER) && !player.isInsideVehicle()){
 		    //System.out.println("is in water");
-			damageChance += .05;
+            if (this.p.getConfig().getBoolean("apocalypseDamageWater", true)) {
+                damageChance += .05;
+            }
 		}
 		if (loc.getWorld().getHighestBlockYAt(loc) <= loc.getY() && (loc.getWorld().hasStorm() || loc.getWorld().isThundering())){
-			damageChance += .05;
+            if (this.p.getConfig().getBoolean("apocalypseDamageAcidRain", true)) {
+                damageChance += .05;
+            }
 		}
 		//System.out.println(damageChance);
 		java.util.Date now = new Date();
