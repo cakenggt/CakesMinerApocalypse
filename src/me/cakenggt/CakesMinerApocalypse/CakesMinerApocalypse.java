@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -96,10 +97,19 @@ public class CakesMinerApocalypse extends JavaPlugin {
         gRecipe.setIngredient('B', Material.IRON_BLOCK);
         gRecipe.setIngredient('C', Material.REDSTONE);
         final FurnaceRecipe fRecipe = new FurnaceRecipe(new ItemStack(Material.GRAVEL, 1), Material.SNOW_BLOCK);
+        final FurnaceRecipe aRecipe = new FurnaceRecipe(new ItemStack(Material.CHAINMAIL_HELMET, 1), Material.GOLD_HELMET);
+        final FurnaceRecipe bRecipe = new FurnaceRecipe(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), Material.GOLD_CHESTPLATE);
+        final FurnaceRecipe cRecipe = new FurnaceRecipe(new ItemStack(Material.CHAINMAIL_LEGGINGS, 1), Material.GOLD_LEGGINGS);
+        final FurnaceRecipe dRecipe = new FurnaceRecipe(new ItemStack(Material.CHAINMAIL_BOOTS, 1), Material.GOLD_BOOTS);
         getServer().addRecipe(gRecipe);
         getServer().addRecipe(fRecipe);
+        getServer().addRecipe(aRecipe);
+        getServer().addRecipe(bRecipe);
+        getServer().addRecipe(cRecipe);
+        getServer().addRecipe(dRecipe);
         setupRefresh();
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.broadcast, 20L, 100L);
+        alternateWorlds();
         System.out.println(this + " is now enabled!");
     }
 
@@ -149,7 +159,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	    }
 	    this.setSize(config.getInt("size", this.getSize()));
 	    for (World world : getServer().getWorlds()){
-	    	this.setOn(world, config.getBoolean("worlds." + world.getName(), true));
+	    	this.setOn(world, config.getBoolean("worlds." + world.getName(), false));
 	    }
 	    this.setRandomSpawn(config.getBoolean("randomSpawn", this.getRandomSpawn()));
 	    this.setApocalypseDamage(config.getBoolean("apocalypseDamage", this.getApocalypseDamage()));
@@ -398,6 +408,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	   		for (String part : args){
 	   			message = message + " " + part;
 	   		}
+	   		System.out.println("[Support Chat] " + sender.getName() + ":" + message);
 	   		Player[] recipientsArray = sender.getServer().getOnlinePlayers();
 			for (int i = 0; i < recipientsArray.length; i ++){
 				if (recipientsArray[i].isOp()){
@@ -457,4 +468,21 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	        outputFile.close();
 		}
     }
+	   
+	   public void alternateWorlds (){
+		   List<World> worlds = getServer().getWorlds();
+		   for (World world : worlds){
+			   if (this.worldsTable.get(world)){
+				   if (getServer().getWorld(world.getName() + "Alternate") == null){
+					   WorldCreator creator = new WorldCreator(world.getName() + "Alternate");
+					   creator.copy(world);
+					   creator.createWorld();
+					   this.setOn(getServer().getWorld(world.getName() + "Alternate"), true);
+				   }
+				   else{
+					   this.setOn(getServer().getWorld(world.getName() + "Alternate"), true);
+				   }
+			   }
+		   }
+	   }
 }

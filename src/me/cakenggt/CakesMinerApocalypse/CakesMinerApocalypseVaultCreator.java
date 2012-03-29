@@ -33,7 +33,6 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		if(!event.isNewChunk())
 			return;
 		//System.out.println("new chunk");
-		
 		double randomA = Math.random() * (1 / this.p.getShelterChance());
 
 		Chunk chunk = event.getChunk();
@@ -42,7 +41,6 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		int y = chunk.getWorld().getHighestBlockYAt(x + 8, z + 2);
 		
 		double randomB = Math.random() * (1 / this.p.getCraterChance());
-		
 		if (randomB <= 1) {
 			Location start = new Location(event.getWorld(), x + 8, y, z + 8);
 			System.out.println("Crater generated at " + start.getX() + " " + start.getZ());

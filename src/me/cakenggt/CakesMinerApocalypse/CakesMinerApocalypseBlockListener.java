@@ -15,7 +15,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +24,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 
 
 public class CakesMinerApocalypseBlockListener implements Listener {
@@ -296,6 +294,7 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 		outputFile.println(location.getWorld().getName() + " " + location.getX() + " " + location.getY() + " " + location.getZ());
 		outputFile.close();
 	}
+	/*
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void chunkUnload(ChunkUnloadEvent event){
 		Chunk chunk = event.getChunk();
@@ -310,6 +309,7 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 			}
 		}
 	}
+	*/
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void chunkLoad(ChunkLoadEvent event){
 		Chunk chunk = event.getChunk();

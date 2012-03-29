@@ -85,41 +85,37 @@ public class CakesMinerApocalypsePlayerLogin implements Listener {
 		event.getPlayer().setSneaking(true);
 		if (!this.p.getRandomSpawn())
 			return;
-		if (event.getPlayer().getBedSpawnLocation() == null || event.getPlayer().getKiller() != null || event.getPlayer().getFoodLevel() < 10){
-			int size = this.p.getSize();
-			final Player thePlayer = event.getPlayer();
-			Location playerLoc = event.getPlayer().getWorld().getSpawnLocation();
-			Location teleLoc = playerLoc;
-			double randX = size * Math.random();
-			double randZ = size * Math.random();
-			randX += -1 * size/2;
-			randZ += -1 * size/2;
-			teleLoc.setX(randX);
-			teleLoc.setZ(randZ);
-			teleLoc.getWorld().loadChunk((int)randX, (int)randZ, true);
-			teleLoc.setY(teleLoc.getWorld().getHighestBlockAt(teleLoc).getY());
-			//event.setRespawnLocation(teleLoc);
-			final Location teleportLoc = teleLoc;
-			@SuppressWarnings("unused")
-			int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
-			    @Override
-			    public void run() {
-			        thePlayer.teleport(teleportLoc);
-			        thePlayer.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
-			        thePlayer.getInventory().addItem(new ItemStack(Material.BOAT, 1));
-			        thePlayer.getInventory().addItem(new ItemStack(Material.SEEDS, 20));
-			        thePlayer.getInventory().addItem(new ItemStack(Material.BREAD, 5));
-			        thePlayer.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
-			        thePlayer.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
-			        thePlayer.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS, 1));
-			        thePlayer.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS, 1));
-			        thePlayer.setNoDamageTicks(100);
-			    }
-			}, 10L);
-			//event.getPlayer().teleport(teleLoc);
-		}
-		else
-			return;
+		int size = this.p.getSize();
+		final Player thePlayer = event.getPlayer();
+		Location playerLoc = event.getPlayer().getWorld().getSpawnLocation();
+		Location teleLoc = playerLoc;
+		double randX = size * Math.random();
+		double randZ = size * Math.random();
+		randX += -1 * size/2;
+		randZ += -1 * size/2;
+		teleLoc.setX(randX);
+		teleLoc.setZ(randZ);
+		teleLoc.getWorld().loadChunk((int)randX, (int)randZ, true);
+		teleLoc.setY(teleLoc.getWorld().getHighestBlockAt(teleLoc).getY());
+		//event.setRespawnLocation(teleLoc);
+		final Location teleportLoc = teleLoc;
+		@SuppressWarnings("unused")
+		int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
+		    @Override
+		    public void run() {
+		        thePlayer.teleport(teleportLoc);
+		        thePlayer.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
+		        thePlayer.getInventory().addItem(new ItemStack(Material.BOAT, 1));
+		        thePlayer.getInventory().addItem(new ItemStack(Material.SEEDS, 20));
+		        thePlayer.getInventory().addItem(new ItemStack(Material.BREAD, 5));
+		        thePlayer.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
+		        thePlayer.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
+		        thePlayer.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS, 1));
+		        thePlayer.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS, 1));
+		        thePlayer.setNoDamageTicks(100);
+		    }
+		}, 10L);
+		//event.getPlayer().teleport(teleLoc);	
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event){
