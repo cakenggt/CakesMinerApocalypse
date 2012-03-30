@@ -163,14 +163,16 @@ public class CakesMinerApocalypse extends JavaPlugin {
         config.set("alternateWorldsPotionEffects", true);
         config.set("alternateWorldsPortalDevice", true);
 		config.set("shelter.lightBlock", "glowstone");
-		config.set("shelter.doorBlockUpper", 71);        // iron door
+		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
+        //config.set("shelter.lightBlock", "129");      // Trees++ Dark Crystal Leaves
+        //config.set("shelter.lightBlock", "129;1");      // Trees++ Crystal Leaves
+		config.set("shelter.doorBlockUpper", 71);        // iron door (also try IC2 reinforced door)
 		config.set("shelter.doorBlockUpperData", 0);
 		config.set("shelter.doorBlockLower", 71);
 		config.set("shelter.doorBlockLowerData", 8);
 		config.set("shelter.leverBlock", 69);
-		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
-        //config.set("shelter.lightBlock", "129");      // Trees++ Dark Crystal Leaves
-        //config.set("shelter.lightBlock", "129;1");      // Trees++ Crystal Leaves
+		config.set("shelter.buildingBlock", Material.BEDROCK.getId());
+		//config.set("shelter.buildingBlock", 231);     // IC2 reinforced stone (harder than obsidian)
 		config.set("shelter.enabledLootGroups", new String[] { "regular" });
 
 		// Default loot

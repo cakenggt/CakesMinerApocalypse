@@ -194,7 +194,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		while (startBlock.getY() <= end.getY()) {
 			while (startBlock.getX() <= end.getX()) {
 				while (startBlock.getZ() <= end.getZ()) {
-					startBlock.setType(Material.BEDROCK);
+					startBlock.setTypeId(this.p.getConfig().getInt("shelter.buildingBlock", Material.BEDROCK.getId()));
 					startBlock = startBlock.getRelative(0, 0, 1);
 				}
 				xIteration++;
