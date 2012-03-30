@@ -169,6 +169,8 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 
 	public void placeShelter(Location start) {
 		System.out.println("Fallout shelter generated at " + start.getX() + " " + start.getZ());
+
+
 		//start.getBlock().setType(Material.GLOWSTONE);
 		start = start.subtract(0, 1, 0);
 		start.getBlock().setType(Material.TRAP_DOOR);

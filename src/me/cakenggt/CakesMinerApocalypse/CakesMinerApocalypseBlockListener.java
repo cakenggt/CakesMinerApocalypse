@@ -312,10 +312,14 @@ public class CakesMinerApocalypseBlockListener implements Listener {
 	*/
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void chunkLoad(ChunkLoadEvent event){
+        if (!this.p.getConfig().getBoolean("unloadChunksBeyond", true)) {
+            return;
+        }
 		Chunk chunk = event.getChunk();
 		int x = Math.abs(chunk.getX() * 16);
 		int z = Math.abs(chunk.getZ() * 16);
 		if (x > this.p.getSize()/2 + 16 || z > this.p.getSize()/2 + 16){
+            System.out.println("chunk "+x+","+z+" is beyond world size, unloading");
 			chunk.unload();
 			return;
 		}

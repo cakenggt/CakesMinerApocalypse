@@ -144,6 +144,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 	      config.load(configfile);
 	    } catch (FileNotFoundException e) {
 	      config.set("size", size);
+          config.set("unloadChunksBeyond", true);
 	      for (World world : getServer().getWorlds()){
 	    	  config.set("worlds." + world.getName(), true);
 	      }
