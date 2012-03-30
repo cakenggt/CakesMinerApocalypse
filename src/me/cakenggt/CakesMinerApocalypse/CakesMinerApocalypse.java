@@ -161,6 +161,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
         config.set("alternateWorldsFixedTime", true);
         config.set("alternateWorldsTemporalMesh", true);
         config.set("alternateWorldsPotionEffects", true);
+        config.set("alternateWorldsPortalDevice", true);
 		config.set("shelter.lightBlock", "glowstone");
 		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
 		config.set("shelter.enabledLootGroups", new String[] { "regular" });

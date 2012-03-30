@@ -412,6 +412,10 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 	*/
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void portalDevice(PlayerInteractEvent event){
+        if (!this.p.getConfig().getBoolean("alternateWorldsPortalDevice", true)) {
+            return;
+        }
+
 		Player player = event.getPlayer();
 		ItemStack[] armor = player.getInventory().getArmorContents();
 		for (ItemStack armors : armor){
