@@ -328,10 +328,30 @@ public class CakesMinerApocalypse extends JavaPlugin {
 
     	// http://dev.bukkit.org/server-mods/enchantmore/
 		config.set("shelter.loot.enchantmore", new String[] {
+           "1xgold_axe+6@1",                  // Axe + Aqua Affinity
+		   "1xiron_axe+48@1",                 // Axe + Power
+		   "1xiron_axe+48@1",                 // Axe + Power
+		   "1xleather_boots;10+48@1+49@1",    // Boots + Power + Punch
+		   "1xdiamond_boots+2@1",             // Boots + Feather Falling X
+		   "10xbow+2@2",                      // Bow + Feather Falling II
+		   "1xbow+33@1",                      // Bow + Silk Touch
+		   "1xleather_chestplate+33@1",       // Chestplate + Silk Touch
+		   "1xleather_chestplate+49@1",       // Chestplate + Punch
 		   "3xfishing_rod+21@2",              // Fishing Rod + Looting
 		   "4xflint_and_steel;25+5@1",        // Flint & Steel + Respiration
+		   "1xflint_and_steel;5+6@1",         // Flint & Steel + Aqua Affinity
 		   "10xflint_and_steel;60+3@1",       // Flint & Steel + Blast Protection
 		   "1xflint_and_steel;15+17@1",       // Flint & Steel + Smite
+		   "1xflint_and_steel+48@1",          // Flint & Steel + Power
+		   "1xgold_sword;10+48@1",            // Sword + Power
+		   "1xdiamond_sword+49@1",            // Sword + Punch
+		   "1xiron_sword;20+35@1",            // Sword + Fortune
+		   "10xwood_sword+33@1",              // Sword + Silk Touch
+		   "1xiron_sword;20+51@1",            // Sword + Infinity
+		   "5xshears+21@1+17@1",              // Shears + Looting + Smite
+		   "1xshears+18@1",                   // Shears + Bane of Arthropods
+		   "1xshears+35@1",                   // Shears + Fortune
+		   "2xdiamond_spade;1500+33@2",       // Shovel + Silk Touch II
 		   "20xiron_helmet+20@1",             // Helmet + Fire Aspect
 		   "1xdiamond_hoe+6@1",               // Hoe + Aqua Affinity
 		   "1xgold_hoe;30+48@1",              // Hoe + Power
@@ -339,17 +359,47 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		   "1xdiamond_pickaxe+50@1",          // Pickaxe + Flame
 		   "1xiron_pickaxe+16@1",             // Pickaxe + Power
 		   "1xdiamond_pickaxe;1000+33@2",     // Pickaxe + Silk Touch II
+		   "1xdiamond_pickaxe;100+16@2",      // Pickaxe + Sharpness
 		   "1xdiamond_leggings+2@1",          // Leggings + Feather Falling
-		   "1xshears+18@1",                   // Shears + Bane of Arthropods
-		   "5xshears+21@1+17@1",              // Shears + Looting + Smite
-		   "2xdiamond_spade;1500+48@1",       // Shovel + Power
-		   "1xgold_sword;10+48@1",            // Sword + Power
-		   "1xwood_sword+33@1",               // Sword + Silk Touch
-		   "1xiron_axe+48@1",                 // Axe + Power
-		   "1xleather_boots;10+48@1+49@1",    // Boots + Power + Punch
-		   "10xbow+2@2",                      // Bow + Feather Falling II
-		   "5xleather_chestplate+33@1",       // Chestplate + Silk Touch
 		   "64xarrow" });
+
+        // http://dev.bukkit.org/server-mods/potionsplus/
+        config.set("shelter.loot.potionsplus", new String[] {
+            "1x6",  // clear
+            "1x11",
+            "1x13",
+            "1x14",
+            "1x22",
+            "1x27",
+            "1x29",
+            "1x30",
+            "1x38",
+            "1x43",
+            "1x45",
+            "1x46",
+            "1x48",
+            "1x54",
+            "1x59",
+            "1x61",
+            "1x62", // stinky
+            "1x16390",  // clear - splash
+            "1x16395",
+            "1x16397",
+            "1x16398",
+            "1x16406",
+            "1x16411",
+            "1x16413",
+            "1x16414",
+            "1x16422",
+            "1x16427",
+            "1x16429",
+            "1x16430",
+            "1x16432",
+            "1x16438",
+            "1x16443",
+            "1x16445",
+            "1x16446", // stinky - splash
+        });
 
     	// http://www.minecraftforum.net/topic/182918-11smp-flans-mods-planes-ww2-guns-vehicles-playerapi-moods-mputils-teams/
 		config.set("shelter.loot.plane", new String[] {
