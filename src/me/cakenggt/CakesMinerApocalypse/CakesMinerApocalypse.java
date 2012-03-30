@@ -365,40 +365,40 @@ public class CakesMinerApocalypse extends JavaPlugin {
 
         // http://dev.bukkit.org/server-mods/potionsplus/
         config.set("shelter.loot.potionsplus", new String[] {
-            "1x6",  // clear
-            "1x11",
-            "1x13",
-            "1x14",
-            "1x22",
-            "1x27",
-            "1x29",
-            "1x30",
-            "1x38",
-            "1x43",
-            "1x45",
-            "1x46",
-            "1x48",
-            "1x54",
-            "1x59",
-            "1x61",
-            "1x62", // stinky
-            "1x16390",  // clear - splash
-            "1x16395",
-            "1x16397",
-            "1x16398",
-            "1x16406",
-            "1x16411",
-            "1x16413",
-            "1x16414",
-            "1x16422",
-            "1x16427",
-            "1x16429",
-            "1x16430",
-            "1x16432",
-            "1x16438",
-            "1x16443",
-            "1x16445",
-            "1x16446", // stinky - splash
+            "1xpotion;6",  // clear
+            "1xpotion;11",
+            "1xpotion;13",
+            "1xpotion;14",
+            "1xpotion;22",
+            "1xpotion;27",
+            "1xpotion;29",
+            "1xpotion;30",
+            "1xpotion;38",
+            "1xpotion;43",
+            "1xpotion;45",
+            "1xpotion;46",
+            "1xpotion;48",
+            "1xpotion;54",
+            "1xpotion;59",
+            "1xpotion;61",
+            "1xpotion;62", // stinky
+            "1xpotion;16390",  // clear - splash
+            "1xpotion;16395",
+            "1xpotion;16397",
+            "1xpotion;16398",
+            "1xpotion;16406",
+            "1xpotion;16411",
+            "1xpotion;16413",
+            "1xpotion;16414",
+            "1xpotion;16422",
+            "1xpotion;16427",
+            "1xpotion;16429",
+            "1xpotion;16430",
+            "1xpotion;16432",
+            "1xpotion;16438",
+            "1xpotion;16443",
+            "1xpotion;16445",
+            "1xpotion;16446", // stinky - splash
         });
 
     	// http://www.minecraftforum.net/topic/182918-11smp-flans-mods-planes-ww2-guns-vehicles-playerapi-moods-mputils-teams/

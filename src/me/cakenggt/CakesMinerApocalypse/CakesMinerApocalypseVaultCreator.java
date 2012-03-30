@@ -267,21 +267,13 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		start.getBlock().getRelative(5, 2, 5).setType(Material.CHEST);
 		start.getBlock().getRelative(5, 2, 6).setType(Material.CHEST);
 		Block[] chestArray = { start.getBlock().getRelative(-1, 0, 1),
-				start.getBlock().getRelative(-1, 0, 2),
 				start.getBlock().getRelative(-1, 2, 1),
-				start.getBlock().getRelative(-1, 2, 2),
 				start.getBlock().getRelative(-1, 0, 5),
-				start.getBlock().getRelative(-1, 0, 6),
 				start.getBlock().getRelative(-1, 2, 5),
-				start.getBlock().getRelative(-1, 2, 6),
 				start.getBlock().getRelative(5, 0, 1),
-				start.getBlock().getRelative(5, 0, 2),
 				start.getBlock().getRelative(5, 2, 1),
-				start.getBlock().getRelative(5, 2, 2),
 				start.getBlock().getRelative(5, 0, 5),
-				start.getBlock().getRelative(5, 0, 6),
-				start.getBlock().getRelative(5, 2, 5),
-				start.getBlock().getRelative(5, 2, 6) };
+				start.getBlock().getRelative(5, 2, 5), };
 		int i = 0;
 		int g = random.nextInt(lootGroups.size());
 		for (Block block : chestArray) {
@@ -298,7 +290,7 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 			//ItemStack[] chestStack = new ItemStack[27];
 
 
-			for (int t = 0; t < 27; t++) {
+			for (int t = 0; t < chestInventory.getSize(); t++) {
 				int a = (int) (Math.random() * 64);
 				int b = (int) (Math.random() * 64);
 				if (a >= 54 && a <= 63)
