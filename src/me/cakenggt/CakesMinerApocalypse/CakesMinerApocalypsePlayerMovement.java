@@ -157,36 +157,40 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 		}
 		//player.sendMessage("damage Chance = " + (damageChance - geck));
 		if (damageChance >= 50){
-			ItemStack[] armor = player.getInventory().getArmorContents();
-			int bar = 1;
-			for (ItemStack armors : armor){
-				if (armors.getType() == Material.CHAINMAIL_BOOTS || armors.getType() == Material.CHAINMAIL_CHESTPLATE || armors.getType() == Material.CHAINMAIL_HELMET || armors.getType() == Material.CHAINMAIL_LEGGINGS)
-					bar = bar * 1;
-				else
-					bar = bar * 0;
-			}
-			if (player.getWorld().getName().endsWith("Alternate")){
-				World altWorld = this.p.getServer().getWorld(player.getWorld().getName().substring(0, player.getLocation().getWorld().getName().length() - 9));
-				Location playerLoc = player.getLocation();
-				playerLoc.setWorld(altWorld);
-				player.teleport(playerLoc);
-			}
-			else{
-				World altWorld = this.p.getServer().getWorld(player.getWorld().getName() + "Alternate");
-				Location playerLoc = player.getLocation();
-				playerLoc.setWorld(altWorld);
-				player.teleport(playerLoc);
-			}
-			if (bar == 0){
-				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 24000, 4));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 24000, 4));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 24000, 4));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 24000, 4));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 24000, 4));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 24000, 4));
-			}
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            int bar = 1;
+            for (ItemStack armors : armor){
+                if (armors.getType() == Material.CHAINMAIL_BOOTS || armors.getType() == Material.CHAINMAIL_CHESTPLATE || armors.getType() == Material.CHAINMAIL_HELMET || armors.getType() == Material.CHAINMAIL_LEGGINGS)
+                    bar = bar * 1;
+                else
+                    bar = bar * 0;
+            }
+            if (this.p.getConfig().getBoolean("alternateWorldsTemporalMesh", true)) {
+                if (player.getWorld().getName().endsWith("Alternate")){
+                    World altWorld = this.p.getServer().getWorld(player.getWorld().getName().substring(0, player.getLocation().getWorld().getName().length() - 9));
+                    Location playerLoc = player.getLocation();
+                    playerLoc.setWorld(altWorld);
+                    player.teleport(playerLoc);
+                }
+                else{
+                    World altWorld = this.p.getServer().getWorld(player.getWorld().getName() + "Alternate");
+                    Location playerLoc = player.getLocation();
+                    playerLoc.setWorld(altWorld);
+                    player.teleport(playerLoc);
+                }
+            }
+            if (this.p.getConfig().getBoolean("alternateWorldsPotionEffects", true)) {
+                if (bar == 0){
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 24000, 4));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 24000, 4));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 24000, 4));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 24000, 4));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 24000, 4));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 24000, 4));
+                }
+            }
 		}
-		if (player.getWorld().getName().endsWith("Alternate")){
+		if (this.p.getConfig().getBoolean("alternateWorldsFixedTime", true) && player.getWorld().getName().endsWith("Alternate")){
 			//player.getWorld().setTime(18000);
 			player.getWorld().setTime(6000);
 			byte light = player.getLocation().getBlock().getLightLevel();

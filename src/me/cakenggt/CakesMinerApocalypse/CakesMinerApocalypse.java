@@ -112,7 +112,12 @@ public class CakesMinerApocalypse extends JavaPlugin {
         getServer().addRecipe(cRecipe);
         getServer().addRecipe(dRecipe);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.broadcast, 20L, 100L);
-        alternateWorlds();
+
+        if (getConfig().getBoolean("alternateWorlds", true)) {
+            alternateWorlds();
+        }
+
+
         System.out.println(this + " is now enabled!");
     }
 
@@ -152,6 +157,10 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		config.set("pipboyID", pipboyID);
 		config.set("chatDistance", chatDistance);
 		config.set("alwaysSneak", true);    
+		config.set("alternateWorlds", true);    
+        config.set("alternateWorldsFixedTime", true);
+        config.set("alternateWorldsTemporalMesh", true);
+        config.set("alternateWorldsPotionEffects", true);
 		config.set("shelter.lightBlock", "glowstone");
 		//config.set("shelter.lightBlock", "128;1");     // PlasticCraft GlowingPlexiglass
 		config.set("shelter.enabledLootGroups", new String[] { "regular" });
