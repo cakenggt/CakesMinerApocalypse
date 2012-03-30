@@ -10,7 +10,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.ContainerBlock;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +39,7 @@ public class CakesMinerApocalypseNuke implements Listener {
 		//System.out.println(random);
 		if (random < 1){
 			//System.out.println("smelting succeed");
-			Furnace furnace = (Furnace) event.getFurnace().getState();
+			Furnace furnace = (Furnace) event.getBlock().getState();
 			Inventory furnaceInventory = furnace.getInventory();
 			furnaceInventory.setItem(2, new ItemStack(Material.SNOW, 1));
 			furnace.update(true);
@@ -51,9 +51,9 @@ public class CakesMinerApocalypseNuke implements Listener {
 		List<Block> exploded = event.blockList();
 		int amount = 0;
 		for (Block b : exploded){
-			if(b.getState() instanceof ContainerBlock){
+			if(b.getState() instanceof Chest){
 				//System.out.println("was a containerblock");
-			    ContainerBlock container = (ContainerBlock)b.getState();
+			    Chest container = (Chest)b.getState();
 			    Inventory bInventory = container.getInventory();
 			    ItemStack[] contents = bInventory.getContents();
 			    for (ItemStack a : contents){
