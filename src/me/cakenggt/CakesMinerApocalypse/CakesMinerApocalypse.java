@@ -186,6 +186,146 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		// Some examples for reference / inspiration / ease of enabling if mods/plugins installed
 		// These aren't enabled by default (not in enabledLootGroups)
 
+        // IndustrialCraft^2
+        config.set("shelter.loot.ic2", new String[] {
+            "3xiron_block",
+            "64xiron_ingot",
+            "64xiron_ingot",
+            "32xiron_ingot",
+            "64x30249",     // refined iron
+            "16x30244",     // refined uranium
+            "1x30209",      // electric jetpack
+            "1x30211",      // rubber boots
+            "48x30216",     // rubber
+            "16x30239",     // RE Battery
+            "16x30239",     // RE Battery
+            "16x30239",     // RE Battery
+            "16x30239",     // RE Battery
+            "16x30238",     // Single-Use Battery
+            "16x30238",     // Single-Use Battery
+            "1x30222",      // Tin Can 
+            "1x30222",      // Tin Can 
+            "1x30222",      // Tin Can 
+            "1x139;1",      // Rubber Tree Sapling
+            "64x30203",     // Depleted Isotope Cell
+            });
+    
+        config.set("shelter.loot.ic2more", new String[] {
+            "32x5261",      // bronze ingot
+            "1x30194;100",  // bronze chestplate
+            "1x30195",      // bronze helmet
+            "1x30192;20",   // bronze boots
+            "1x30193;50",   // bronze leggings
+            "1x30183;10",   // wrench
+            "16x30188",     // matter
+            "5x30190",      // advanced circuit
+            "1x30208;27",   // mining laser
+            "64x30184;3",   // insulated gold cable
+            "64x30184;1",   // uninsulated copper cable
+            "1x23347",      // electric fishing pole  
+            "1x31256",      // thermometer
+            "16x238",       // solar panel
+            "1x30116",      // solar helmet
+            "10x183;1",     // medium voltage solar array
+        });
+
+        // Miscellaneous mods
+        config.set("shelter.loot.mixedmods", new String[] {
+            "5x181;5",      // Iron Chests - Crystal Chest
+            "1x126",        // Wireless Redstone - transmitter
+            "1x126",        // Wireless Redstone - transmitter
+            "1x127",        // Wireless Redstone - receiver
+            "14x214",       // Dynamic Elevators - elevator
+            "1x215",        // Dynamic Elevator - elevator buttons
+            "64x4308",      // Buildcraft - stone transport pipe
+            "64x4310",      // Buildcraft - golden transport pipe
+            "64x4312",      // Buildcraft - obsidian transport pipe
+            "32x4303",      // Buildcraft - Additional Pipes - item teleport pipe
+            "16x4060",      // Buildcraft - diamond gear
+            "32x4058",      // Buildcraft - iron gear
+            "1x3256",       // Hot Air Balloon
+            "1x3256",       // Hot Air Balloon
+            "1x3256",       // Hot Air Balloon
+            "1x3257",       // Hot Air Balloon - powered
+            "1x3257",       // Hot Air Balloon - powered
+            "1x567",        // Animal Bikes - cow bike
+            "1x567;1",      // Animal Bikes - spider bike
+            "1x567;5",      // Animal Bikes - wolf bike
+            "16x569",       // Animal Bikes - rawhide
+        });
+
+        config.set("shelter.loot.forestry", new String[] {
+            "1x13304",      // backpacks
+            "1x13305",     
+            "1x13306",     
+            "1x13307",     
+            "1x13308",     
+            "1x13344",
+            "1x13345",
+            "1x13346",
+            "1x13347",
+            "16x13282",     // honeycomb
+            "48x13291",     // honeyed slice
+            "16x13319",     // honey can
+            "16x13322",     // honey capsule
+            "8x13787",      // crated honey
+            "32x13285",     // beeswax
+            "64x5274",      // ash
+            "64x13278",     // mulch
+            "64x197",       // humus
+            "10x13788",     // royal jelly, crated
+            "32x13286",     // pollen
+            "16x5267",      // empty vial
+            "8x5276",       // water can
+            "8x5282",       // iodine capsule
+            "64x13292",     // short mead
+            "64x13292",     // short mead
+            "1x13293",      // ambrosia
+            "1x13262",      // broken pickaxe
+            "1x13262",      // broken pickaxe
+            "1x13265",      // broken shovel
+            "1x13265",      // broken shovel
+        });
+
+        config.set("shelter.loot.trees++", new String[] {
+            "16x20000",     // Banana
+            "16x20000",     // Banana
+            "16x20000;1",   // Fig
+            "16x20000;2",
+            "16x20000;3",
+            "16x20000;4",
+            "16x20000;5",
+            "16x20000;6",
+            "16x20000;7",
+            "16x20000;7",
+            "16x20000;8",
+            "16x20000;9",
+            "16x20001;0",
+            "16x20001;1",
+            "16x20001;2",
+            "16x20001;3",
+            "8x20002",     // Blackberry Bread
+            "8x20002;1",     
+            "8x20002;2",     
+            "8x20002;3",     
+            "8x20002;3",     
+            "8x20002;4",     
+            "8x20002;5",     
+            "8x20002;6",     
+            "8x20002;7",     
+            "8x20002;8",     
+            "8x20002;9",     
+            "1x176",        // desert ironwood sapling
+            "1x176;1", 
+            "1x176;2", 
+            "1x176;3", 
+            "1x176;4", 
+            "1x176;5", 
+            "1x176;6", 
+            "1x176;7", 
+            "1x178;2", 
+        });
+
     	// http://dev.bukkit.org/server-mods/enchantmore/
 		config.set("shelter.loot.enchantmore", new String[] {
 		   "3xfishing_rod+21@2",              // Fishing Rod + Looting
