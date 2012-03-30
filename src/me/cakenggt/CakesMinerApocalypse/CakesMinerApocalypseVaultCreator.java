@@ -320,10 +320,10 @@ public class CakesMinerApocalypseVaultCreator implements Listener {
 		bottom.setTypeIdAndData(26, (byte) 8, false);
 		bottom.getRelative(0, 0, -1).setTypeIdAndData(26, (byte) 0, true);
 		bottom = start.getBlock().getRelative(2, 0, -2);
-		bottom.setTypeIdAndData(71, (byte) 0, false);
-		bottom.getRelative(0, 1, 0).setTypeIdAndData(71, (byte) 8, true);
+		bottom.setTypeIdAndData(this.p.getConfig().getInt("shelter.doorBlockUpper", 71), (byte)this.p.getConfig().getInt("shelter.doorBlockUpperData", 0), false);
+		bottom.getRelative(0, 1, 0).setTypeIdAndData(this.p.getConfig().getInt("shelter.doorBlockLower", 71), (byte)this.p.getConfig().getInt("shelter.doorBlockLowerData", 8), true);
 		bottom = start.getBlock().getRelative(2, 1, -1);
-		bottom.setTypeIdAndData(69, (byte) 1, false);
+		bottom.setTypeIdAndData(this.p.getConfig().getInt("shelter.leverBlock", 69), (byte)1, false);
 		start.getBlock().getRelative(4, 0, 3).setType(Material.CHEST);
 		Chest chest = (Chest) start.getBlock().getRelative(4, 0, 3)
 				.getState();
