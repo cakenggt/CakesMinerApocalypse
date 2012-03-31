@@ -153,6 +153,7 @@ public class CakesMinerApocalypse extends JavaPlugin {
 		config.set("apocalypseDamage", apocalypseDamage);
 		config.set("apocalypseDamageWater", true);
 		config.set("apocalypseDamageAcidRain", true);
+		config.set("apocalypseDamageThreshold", 0.0);
 		config.set("shelterChance", shelterChance);
 		config.set("craterChance", craterChance);
 		config.set("pipboyID", pipboyID);

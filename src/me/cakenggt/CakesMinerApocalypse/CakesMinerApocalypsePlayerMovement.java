@@ -156,6 +156,11 @@ public class CakesMinerApocalypsePlayerMovement implements Listener {
 			}
 		}
 		//player.sendMessage("damage Chance = " + (damageChance - geck));
+        if (damageChance > 0 && damageChance < this.p.getConfig().getDouble("apocalypseDamageThreshold", 0.0)) {
+            // not damaging enough to register
+            return;
+        }
+
 		if (damageChance >= 50){
             ItemStack[] armor = player.getInventory().getArmorContents();
             int bar = 1;
