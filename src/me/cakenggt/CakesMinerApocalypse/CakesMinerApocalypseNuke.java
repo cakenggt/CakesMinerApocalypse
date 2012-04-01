@@ -51,7 +51,7 @@ public class CakesMinerApocalypseNuke implements Listener {
 		List<Block> exploded = event.blockList();
 		int amount = 0;
 		for (Block b : exploded){
-			if(b.getState() instanceof Chest){
+			if(b != null && b.getState() instanceof Chest){
 				//System.out.println("was a containerblock");
 			    Chest container = (Chest)b.getState();
 			    Inventory bInventory = container.getInventory();
